@@ -694,14 +694,14 @@ export function TriageAgentWorkflow(): JSX.Element {
               <div className="px-4 py-3 text-[14px] text-[#758575]">
                 Describe a security issue to investigate...
               </div>
-              <div className="px-4 py-2 border-t border-[#1a1a1a] flex items-center justify-between relative">
+              <div className="px-4 py-2 border-t border-[#1a1a1a] flex items-center justify-between">
                 {/* Agent count + Model selector */}
                 <div className="flex items-center gap-2">
                   <button
                     onClick={() => setShowAgentSelector(!showAgentSelector)}
                     className="px-2 py-1 bg-[#1a1a1a] hover:bg-[#252525] rounded text-[12px] text-[#dbd7caee] flex items-center gap-1.5 transition-colors"
                   >
-                    <span className="text-[#4d9375] font-medium">{agentCount}x</span>
+                    <span className="text-[#C9A37E] font-medium">{agentCount}x</span>
                     <span className="text-[#758575]">|</span>
                     <span>{selectedModels[0]}</span>
                     <svg className={`w-3 h-3 text-[#758575] transition-transform ${showAgentSelector ? 'rotate-180' : ''}`} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -709,50 +709,6 @@ export function TriageAgentWorkflow(): JSX.Element {
                     </svg>
                   </button>
                 </div>
-                
-                {/* Dropdown for agent/model selection */}
-                {showAgentSelector && (
-                  <div className="absolute bottom-full left-4 mb-2 w-64 bg-[#1e1e1e] border border-[#2d2d2d] rounded-lg shadow-xl overflow-hidden z-50">
-                    {/* Agent count selector */}
-                    <div className="p-3 border-b border-[#2d2d2d]">
-                      <div className="text-[10px] uppercase tracking-wider text-[#758575] mb-2">Agent Instances</div>
-                      <div className="flex gap-1">
-                        {[1, 2, 3].map(count => (
-                          <button
-                            key={count}
-                            onClick={() => handleAgentCountChange(count)}
-                            className={`flex-1 py-1.5 rounded text-[12px] font-medium transition-colors ${
-                              agentCount === count
-                                ? 'bg-[#4d9375] text-[#0a0a0a]'
-                                : 'bg-[#121212] text-[#dbd7caee] hover:bg-[#252525]'
-                            }`}
-                          >
-                            {count}x
-                          </button>
-                        ))}
-                      </div>
-                    </div>
-                    
-                    {/* Model selectors for each agent */}
-                    <div className="p-3 space-y-2">
-                      <div className="text-[10px] uppercase tracking-wider text-[#758575] mb-2">Model Selection</div>
-                      {Array.from({ length: agentCount }).map((_, idx) => (
-                        <div key={idx} className="flex items-center gap-2">
-                          <span className="text-[11px] text-[#758575] w-5">#{idx + 1}</span>
-                          <select
-                            value={selectedModels[idx] || AVAILABLE_MODELS[0]}
-                            onChange={(e) => handleModelChange(idx, e.target.value)}
-                            className="flex-1 bg-[#121212] border border-[#2d2d2d] rounded px-2 py-1.5 text-[12px] text-[#dbd7caee] focus:outline-none focus:border-[#4d9375]"
-                          >
-                            {AVAILABLE_MODELS.map(model => (
-                              <option key={model} value={model}>{model}</option>
-                            ))}
-                          </select>
-                        </div>
-                      ))}
-                    </div>
-                  </div>
-                )}
                 
                 <div className="w-6 h-6 rounded-full bg-[#121212] flex items-center justify-center">
                   <svg className="w-4 h-4 text-[#758575]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
@@ -829,6 +785,56 @@ export function TriageAgentWorkflow(): JSX.Element {
         </div>
       </div>
       </div>
+      
+      {/* Agent Selector Dropdown - Outside main window to avoid overflow clipping */}
+      {showAgentSelector && (
+        <div 
+          className="absolute z-50 w-64 bg-[#1e1e1e] border border-[#2d2d2d] rounded-lg shadow-xl"
+          style={{ 
+            bottom: '52px',
+            left: '20px',
+          }}
+        >
+          {/* Agent count selector */}
+          <div className="p-3 border-b border-[#2d2d2d]">
+            <div className="text-[10px] uppercase tracking-wider text-[#758575] mb-2">Agent Instances</div>
+            <div className="flex gap-1">
+              {[1, 2, 3].map(count => (
+                <button
+                  key={count}
+                  onClick={() => handleAgentCountChange(count)}
+                  className={`flex-1 py-1.5 rounded text-[12px] font-medium transition-colors ${
+                    agentCount === count
+                      ? 'bg-[#C9A37E] text-[#0a0a0a]'
+                      : 'bg-[#121212] text-[#dbd7caee] hover:bg-[#252525]'
+                  }`}
+                >
+                  {count}x
+                </button>
+              ))}
+            </div>
+          </div>
+          
+          {/* Model selectors for each agent */}
+          <div className="p-3 space-y-2">
+            <div className="text-[10px] uppercase tracking-wider text-[#758575] mb-2">Model Selection</div>
+            {Array.from({ length: agentCount }).map((_, idx) => (
+              <div key={idx} className="flex items-center gap-2">
+                <span className="text-[11px] text-[#758575] w-5">#{idx + 1}</span>
+                <select
+                  value={selectedModels[idx] || AVAILABLE_MODELS[0]}
+                  onChange={(e) => handleModelChange(idx, e.target.value)}
+                  className="flex-1 bg-[#121212] border border-[#2d2d2d] rounded px-2 py-1.5 text-[12px] text-[#dbd7caee] focus:outline-none focus:border-[#C9A37E]"
+                >
+                  {AVAILABLE_MODELS.map(model => (
+                    <option key={model} value={model}>{model}</option>
+                  ))}
+                </select>
+              </div>
+            ))}
+          </div>
+        </div>
+      )}
       
       {/* Terminal Overlay - Outside main window to allow overflow - Hidden on mobile */}
       <motion.div
