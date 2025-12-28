@@ -1,259 +1,256 @@
 'use client';
 
-import { motion, AnimatePresence } from 'framer-motion';
+import { motion } from 'framer-motion';
 import Link from 'next/link';
 import Image from 'next/image';
+import type { JSX } from 'react';
 import { useState } from 'react';
+import { SiteNav } from '../../components/SiteNav';
 
-export default function Careers() {
-  const [expandedIndex, setExpandedIndex] = useState<number | null>(null);
+export default function Careers(): JSX.Element {
+  const [openRole, setOpenRole] = useState<number | null>(null);
 
-  const positions = [
+  const roles = [
     {
-      title: 'AI Engineer — Computer Use, Training & Inference',
-      department: 'Engineering',
-      contract: 'Full-time',
-      location: 'On-site, San Francisco',
-      posted: 'September 29, 2025',
-      description: [
-        'Build models that reliably operate computers. You will turn computer-use telemetry into skills that navigate sandboxed VMs, choose the right tools, recover from errors, and produce safe, auditable PRs. You will own pre-training and post-training loops, dataset hygiene, and serving that meets strict p95 and p99 targets.',
-        'You will run training on cloud clusters, distill to smaller controllers where it helps control loops, and deploy high-throughput inference with strong safety gates. The standard is production behavior, not lab demos. Success is higher task win-rate, lower irreversibility risk, and lower cost per successful routine.'
-      ]
+      title: 'ML / Infra Engineer',
+      mission: 'Build the data and compute substrate that makes Triage trustworthy at scale: high-fidelity telemetry ingestion, durable storage, low-latency querying, and learning loops that improve detections and remediations over time.',
+      responsibilities: [
+        'Design and operate multi-tenant pipelines for AI telemetry (model calls, tool traces, RAG retrievals, costs/latency/errors) with strong guarantees on ordering, integrity, and retention.',
+        'Build storage and indexing systems for trace search and analytics (time-series + columnar + blob), including schema evolution and backfills without downtime.',
+        'Implement evaluation and training pipelines (datasets, labeling workflows, offline/online evals, regression gates) that tie detection quality to shipped releases.',
+        'Own core infrastructure: orchestration, CI/CD for data jobs, reliability, capacity planning, and cost controls (especially around high-volume trace ingest).',
+        'Establish observability for the observability platform: SLIs/SLOs, anomaly detection, incident response, and automated runbooks.',
+        'Harden the platform against data exfiltration and tampering risks (PII handling, encryption, access boundaries, audit logs).'
+      ],
+      qualifications: [
+        'Strong systems background: distributed systems, streaming, storage engines, or large-scale data processing.',
+        'Production experience with at least two of: Kafka/PubSub, ClickHouse/BigQuery/Snowflake, Postgres, Redis, object storage, OpenTelemetry.',
+        'Comfortable shipping infrastructure that is secure by default (encryption, RBAC, secrets, tenancy boundaries).',
+        'Fluency in one systems language (Go/Rust) and strong engineering rigor (testing, rollout discipline, performance profiling).'
+      ],
+      niceToHave: [
+        'Experience with ML pipelines (feature generation, dataset curation, eval harnesses, RLHF/DPO tooling).',
+        'Familiarity with LLM application traces (tool execution graphs, RAG assembly, structured prompts).'
+      ],
+      success: 'Trace ingestion is reliable under spikes, queries are fast and predictable, and model/security learning loops have reproducible data provenance and regression tests.'
     },
     {
-      title: 'Full-Stack Software Engineer',
-      department: 'Engineering',
-      contract: 'Full-time',
-      location: 'On-site, San Francisco',
-      posted: 'September 29, 2025',
-      description: [
-        'Own product surfaces end to end. You will design secure workflows, ship clean UX, and stitch together services and integrations that turn security research into usable product. You will move quickly, instrument your work, and hold a high bar for reliability and readability.',
-        'You will work across React and TypeScript on the client and Python or Go on the server. You will partner with security and infra to translate findings into reviewable fixes, with clear gates, rollbacks, and per-tenant isolation. Your work should feel fast, auditable, and trustworthy.'
-      ]
+      title: 'Backend / Security Engineer',
+      mission: 'Build the secure, enterprise-grade product foundation: APIs, tenancy, permissions, integrations, and the security reasoning surfaces that teams trust in production.',
+      responsibilities: [
+        'Implement core backend services for trace ingestion, trace search, policy configuration, alerting, and remediation workflows.',
+        'Build multi-tenant identity and access controls (RBAC/ABAC), audit logging, and secure admin tooling.',
+        'Develop hardened ingestion endpoints and SDKs with strict validation, replay protection, and safe handling of secrets and sensitive payloads.',
+        'Implement detection primitives: rules engines, anomaly signals, policy enforcement, and integration points for security frameworks and customer workflows.',
+        'Integrate with the ecosystem (SIEM/logging, ticketing, Slack, cloud providers, CI) with attention to least-privilege and secure defaults.',
+        'Drive secure engineering practices: threat modeling, dependency hygiene, security reviews, and vulnerability response.'
+      ],
+      qualifications: [
+        'Strong backend engineering fundamentals (APIs, databases, caching, concurrency, performance).',
+        'Demonstrated security engineering judgment: authn/authz, secure storage, key management, auditability, and incident response basics.',
+        'Experience with multi-tenant SaaS constraints (data isolation, noisy neighbor mitigation, quota controls).',
+        'Proficiency in Go/Rust/TypeScript (or similar) and a track record of shipping production services.'
+      ],
+      niceToHave: [
+        'Familiarity with OpenTelemetry, distributed tracing, or log analytics products.',
+        'Exposure to application security, detection engineering, or adversarial thinking (abuse cases, prompt injection patterns, data poisoning vectors).'
+      ],
+      success: 'Customers can safely onboard and operate at scale with clear boundaries, strong audit trails, and low operational friction—without compromising security.'
     },
     {
-      title: 'Backend Software Engineer',
-      department: 'Engineering',
-      contract: 'Full-time',
-      location: 'On-site, San Francisco',
-      posted: 'September 29, 2025',
-      description: [
-        'Build the core services that make agents safe, fast, and scalable. You will design APIs for agent control and VM lifecycle, schedule large workloads across ephemeral compute, and own the correctness and cost of the system. You will profile, trace, and harden the platform until it holds up under real load.',
-        'Your focus is reliability and clarity. Jobs are idempotent, actions are capability-scoped, and evidence is captured deterministically. You will turn complex distributed behavior into simple, well-documented services that others can build on without fear.'
-      ]
-    },
-    {
-      title: 'Cybersecurity SME + Engineer',
-      department: 'Engineering',
-      contract: 'Full-time',
-      location: 'On-site, San Francisco',
-      posted: 'September 29, 2025',
-      description: [
-        'Translate tradecraft into product. You will design adversarial test suites across web, mobile, CI, and cloud, then encode what works into repeatable checks and safe fixes. Your work will harden our sandboxing and network policy and raise the signal-to-noise ratio of findings.',
-        'You write clearly, reason from threat models, and show the limits of each approach. The output is not a one-off report. It is a durable capability: detections, telemetry, confidence scoring, and guidance that help teams merge with confidence.'
-      ]
-    },
-    {
-      title: 'Software Engineer Intern (Summer 2026)',
-      department: 'Intern',
-      contract: 'Internship',
-      location: 'On-site, San Francisco',
-      posted: 'September 29, 2025',
-      description: [
-        'Ship something real and leave it running. You will own a scoped project that lands in production, with tests, docs, and dashboards so others can operate it after you return to school. Expect design reviews, security reviews, and fast feedback.',
-        'We value curiosity, grit, and work that speaks for itself. Bring a demo, a repository, or a short write-up that shows how you think and what you ship.'
-      ]
-    },
-    {
-      title: 'Tell Us What You Can Do (Open Application)',
-      department: 'General',
-      contract: 'Full-time',
-      location: 'On-site, San Francisco',
-      posted: 'September 29, 2025',
-      description: [
-        'If you do not see a perfect fit but can bend our roadmap, tell us how. Describe the problem you would own, how you would measure success, and why you are the one to deliver it. We care about clear thinking, decisive execution, and respect for safety.'
-      ]
+      title: 'AI Engineer',
+      mission: 'Ship the reasoning layer: model-driven detection, triage, and remediation for AI-native attack surfaces across inference, retrieval, tool use, and training routes.',
+      responsibilities: [
+        'Build model-facing systems that analyze traces end-to-end: prompt + tools + retrieval context + outputs + downstream effects.',
+        'Implement RAG pipelines and citation-grounded reasoning for detections and remediation recommendations, with measurable accuracy and low hallucination rates.',
+        'Design eval suites for AI security and reliability (attack simulations, adversarial prompts, tool misuse cases), and tie results to deployment gates.',
+        'Develop learning loops: dataset curation, human feedback capture, preference modeling, and post-training workflows (e.g., DPO/RL-style improvements) where appropriate.',
+        'Create developer-facing abstractions (policies, templates, “fix suggestions”, sandbox replays) that make security outcomes actionable.',
+        'Build safe model orchestration: routing across providers, tool permissioning, prompt/tool-level controls, and rigorous red-teaming practices.'
+      ],
+      qualifications: [
+        'Strong applied LLM engineering skills: prompt/tool design, RAG, eval harnesses, failure analysis, and iterative improvement grounded in data.',
+        'Experience building production AI systems with measurable quality metrics (precision/recall, latency, cost, robustness).',
+        'Solid software engineering fundamentals (APIs, data pipelines, testing, deployment discipline).',
+        'Ability to reason adversarially about model behavior and abuse patterns.'
+      ],
+      niceToHave: [
+        'Prior work in security, detection engineering, or trust/safety for AI systems.',
+        'Familiarity with structured generation, constrained decoding, agent execution traces, or sandboxed tool environments.'
+      ],
+      success: 'Detections are grounded, explainable, and hard to evade; remediations are minimal-diff and high-signal; quality improves release-over-release with clean evaluation evidence.'
     }
   ];
 
   return (
-    <main className="min-h-screen bg-bg-primary text-pale-wood">
-      {/* Header */}
-      <nav className="fixed w-full top-0 z-50 backdrop-blur-dark border-b border-border">
-        <div className="container-max">
-          <div className="flex items-center justify-between h-[72px]">
-            <Link href="/" className="flex items-center gap-3">
-              <Image
-                src="/logo.png"
-                alt="Triage"
-                width={36}
-                height={36}
-                className="logo-filter"
-                style={{ width: 'auto', height: '36px' }}
-              />
-            </Link>
-            <div className="flex items-center gap-8 text-[15px]">
-              <Link href="/" className="hover:text-cyan transition-colors">Product</Link>
-              <Link href="/" className="hover:text-cyan transition-colors">How it works</Link>
-              <Link href="/careers" className="text-cyan">Careers</Link>
-              <Link href="/team" className="hover:text-cyan transition-colors">Team</Link>
-              <a href="mailto:srivastavan@berkeley.edu" className="hover:text-cyan transition-colors">Contact</a>
-            </div>
-          </div>
-        </div>
-      </nav>
+    <main className="min-h-screen bg-[#0a0a0a] text-[#f5f4f0]">
+      <SiteNav offsetTop={0} />
 
       <div className="pt-32 pb-20">
         <div className="container-max max-w-6xl">
           {/* Back button */}
-          <Link href="/" className="inline-flex items-center gap-2 text-pale-wood/60 hover:text-pale-wood mb-12 transition-colors">
+          <Link href="/" className="inline-flex items-center gap-2 text-[#f5f4f0b3] hover:text-[#f5f4f0] mb-12 transition-colors">
             <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
               <path d="M12 4l-6 6 6 6" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
             </svg>
-            Back to all Careers
+            Back to Home
           </Link>
 
-          {/* Hero */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            animate={{ opacity: 1, y: 0 }}
-            className="mb-16"
-          >
-            <h1 className="text-[64px] font-light mb-8 leading-[1.1]">
-              Build the future of <span className="text-cyan">DevSecOps</span> with us.
+      {/* Hero */}
+      <motion.div
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        className="mb-20"
+      >
+        <div className="grid gap-12 lg:grid-cols-[1.2fr,0.8fr] items-center">
+          <div>
+            <p className="text-[14px] uppercase tracking-[0.25em] text-[#f5f4f099] mb-6">Careers</p>
+            <h1 className="text-[48px] lg:text-[64px] font-normal leading-[1.05] tracking-[-0.02em] mb-6">
+              Triage is an applied team focused on <span className="text-[#C9A37E]">securing the future of AI software.</span>
             </h1>
-            <div className="text-[18px] leading-[1.8] space-y-6 max-w-4xl">
-              <p>
-                <span className="font-medium">Triage</span> builds autonomous, safety-gated security engineers. We orchestrate AI agents across static analysis, runtime adversarial testing in isolated VMs, and automated remediation PRs.
-              </p>
-              <p>
-                Security today is fragmented and reactive. Tool sprawl, rising cloud cost, and faster release cycles have outpaced human-only workflows. The result: risk compounds while teams stall. That approach won't scale. We are rewiring the security lifecycle around agents that are auditable, reliable, and fast.
-              </p>
-              <p>
-                We are a small, technical team with deep experience in AI, systems, and security. <span className="text-cyan font-medium">We work to win.</span> If you have an edge, reach out.
-              </p>
-            </div>
-          </motion.div>
-
-          {/* Positions Header */}
-          <div className="flex items-center gap-4 mb-8">
-            <h2 className="text-[18px] font-mono uppercase tracking-wider">OPEN POSITIONS</h2>
-            <div className="px-4 py-2 bg-cream text-midnight-green font-mono text-[14px] font-medium">
-              {positions.length}
-            </div>
+            <p className="text-[18px] leading-[1.7] text-[#dbd7caee] max-w-3xl">
+              We harden inference, retrieval, and training pathways so AI systems behave safely under pressure. If you want to work on the infrastructure, reasoning engines, and guardrails that keep modern AI trustworthy, this is it.
+            </p>
           </div>
-
-          {/* Filter dropdowns */}
-          <div className="grid grid-cols-3 gap-6 mb-12 max-w-3xl">
-            <div>
-              <label className="block text-[11px] text-pale-wood/60 font-mono mb-2 uppercase tracking-wider">DEPARTMENT</label>
-              <select className="career-select">
-                <option>All</option>
-                <option>Engineering</option>
-                <option>General</option>
-              </select>
-            </div>
-            <div>
-              <label className="block text-[11px] text-pale-wood/60 font-mono mb-2 uppercase tracking-wider">CONTRACT</label>
-              <select className="career-select">
-                <option>All</option>
-                <option>Full-time</option>
-                <option>Internship</option>
-              </select>
-            </div>
-            <div>
-              <label className="block text-[11px] text-pale-wood/60 font-mono mb-2 uppercase tracking-wider">LOCATION</label>
-              <select className="career-select">
-                <option>All</option>
-                <option>On-site, San Francisco</option>
-              </select>
-            </div>
-          </div>
-
-          {/* Positions List */}
-          <div className="space-y-0 border border-pale-wood/20">
-            {positions.map((position, i) => (
-              <div
-                key={i}
-                className="career-listing-collapsible"
-              >
-                <button
-                  onClick={() => setExpandedIndex(expandedIndex === i ? null : i)}
-                  className="career-listing-header"
-                >
-                  <div className="flex-1">
-                    <h3 className="text-[24px] font-light mb-2">{position.title}</h3>
-                    <div className="text-[13px] text-pale-wood/60">Posted {position.posted}</div>
-                  </div>
-                  
-                  <div className="career-meta-inline">
-                    <div className="meta-inline-item">
-                      <span className="meta-inline-label">DEPARTMENT</span>
-                      <span className="meta-inline-value">{position.department}</span>
-                    </div>
-                    <div className="meta-inline-item">
-                      <span className="meta-inline-label">CONTRACT</span>
-                      <span className="meta-inline-value">{position.contract}</span>
-                    </div>
-                    <div className="meta-inline-item">
-                      <span className="meta-inline-label">LOCATION</span>
-                      <span className="meta-inline-value">{position.location}</span>
-                    </div>
-                  </div>
-
-                  <a 
-                    href={`mailto:srivastavan@berkeley.edu?subject=${encodeURIComponent(position.title + ' - Triage')}`}
-                    className="apply-button"
-                    onClick={(e) => e.stopPropagation()}
-                  >
-                    Apply
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="ml-2">
-                      <path d="M3 8h10M8 3l5 5-5 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/>
-                    </svg>
-                  </a>
-                </button>
-
-                <AnimatePresence>
-                  {expandedIndex === i && (
-                    <motion.div
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: 'auto', opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.3 }}
-                      className="overflow-hidden"
-                    >
-                      <div className="career-expanded-content">
-                        <div className="career-description">
-                          {position.description.map((para, j) => (
-                            <p key={j}>{para}</p>
-                          ))}
-                        </div>
-
-                        {/* To Apply - Right under description */}
-                        <div className="to-apply-section">
-                          <h4 className="text-[16px] font-medium mb-4">To Apply:</h4>
-                          <div className="space-y-3 text-[15px] leading-[1.8]">
-                            <p>
-                              <span className="text-cyan font-medium">1.</span> Email{' '}
-                              <a href="mailto:srivastavan@berkeley.edu" className="text-cyan underline">
-                                srivastavan@berkeley.edu
-                              </a>{' '}
-                              with your resume, LinkedIn, GitHub, what makes you amazing, and what you can own end-to-end.
-                            </p>
-                            <p>
-                              <span className="text-cyan font-medium">2.</span> Wait to hear back.
-                            </p>
-                          </div>
-                        </div>
-                      </div>
-                    </motion.div>
-                  )}
-                </AnimatePresence>
-              </div>
-            ))}
+          <div className="relative h-[560px] w-full">
+            <Image
+              src="/careers-hero.jpg"
+              alt="Triage team working session"
+              fill
+              className="object-cover"
+              priority
+            />
           </div>
         </div>
+      </motion.div>
+
+      {/* Greater description */}
+      <section id="overview" className="mb-24 border border-[#2d2d2d] bg-[#0d0d0d] p-10 space-y-6 text-[18px] leading-[1.8] text-[#f5f4f0]">
+        <p>AI products are being shipped faster than their security and reliability foundations can keep up. Triage exists to close that gap by making inference, retrieval, and training pathways fully visible, and by turning what we observe into concrete fixes teams can ship.</p>
+        <p>We’re building for people who take ownership without being managed, who like hard problems with real consequences, and who want their work to measurably raise the safety floor of the systems others depend on. The bar is high because the stakes are.</p>
+        <p>If you want to help define how modern AI systems are made trustworthy, reach out.</p>
+        <a
+          href="mailto:srivastavan@berkeley.edu"
+          className="inline-flex items-center gap-2 px-8 py-3 border border-[#f5f4f0] text-[#f5f4f0] text-[15px] tracking-tight hover:bg-[#f5f4f0] hover:text-[#0a0a0a] transition-colors"
+        >
+          Email srivastavan@berkeley.edu
+        </a>
+      </section>
+
+      {/* Roles */}
+      <section className="mb-24">
+        <div className="flex items-center gap-4 mb-6">
+          <h2 className="text-[13px] font-medium uppercase tracking-[0.4em] text-[#f5f4f0b3]">Roles we’re hiring</h2>
+          <div className="px-3 py-1 text-[12px] border border-[#f5f4f0b3]">{roles.length} roles</div>
+        </div>
+        <div className="space-y-4">
+          {roles.map((role, index) => {
+            const isOpen = openRole === index;
+            return (
+              <div key={role.title} className="border border-[#2d2d2d] bg-[#0d0d0d]">
+                <button
+                  onClick={() => setOpenRole(isOpen ? null : index)}
+                  className="w-full flex items-start justify-between gap-6 p-6 text-left hover:bg-[#111111] transition-colors"
+                >
+                  <div className="space-y-3">
+                    <span className="text-[11px] uppercase tracking-[0.4em] text-[#f5f4f0b3]">Role {index + 1}</span>
+                    <h3 className="text-[24px] leading-tight text-[#f5f4f0]">{role.title}</h3>
+                    <p className="text-[15px] text-[#f5f4f0b3] line-clamp-2">{role.mission}</p>
+                  </div>
+                  <svg
+                    className={`w-5 h-5 text-[#f5f4f0b3] transition-transform ${isOpen ? 'rotate-180' : ''}`}
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                  >
+                    <path d="M6 9l6 6 6-6" />
+                  </svg>
+                </button>
+                {isOpen && (
+                  <div className="border-t border-[#2d2d2d] p-6 space-y-8">
+                    <div className="grid gap-6 md:grid-cols-2">
+                      <div>
+                        <h4 className="text-[12px] uppercase tracking-[0.35em] text-[#f5f4f0b3] mb-2">Mission</h4>
+                        <p className="text-[15px] text-[#f5f4f0]">{role.mission}</p>
+                      </div>
+                      <div>
+                        <h4 className="text-[12px] uppercase tracking-[0.35em] text-[#f5f4f0b3] mb-2">What success looks like</h4>
+                        <p className="text-[15px] text-[#f5f4f0]">{role.success}</p>
+                      </div>
+                    </div>
+                    <div className="grid gap-6 md:grid-cols-2">
+                      <div>
+                        <h4 className="text-[12px] uppercase tracking-[0.35em] text-[#f5f4f0b3] mb-2">Responsibilities</h4>
+                        <ul className="list-disc pl-5 space-y-1 text-[#f5f4f0] marker:text-[#f5f4f0]">
+                          {role.responsibilities.map((item) => (
+                            <li key={item}>{item}</li>
+                          ))}
+                        </ul>
+                      </div>
+                      <div>
+                        <h4 className="text-[12px] uppercase tracking-[0.35em] text-[#f5f4f0b3] mb-2">Qualifications</h4>
+                        <ul className="list-disc pl-5 space-y-1 text-[#f5f4f0] marker:text-[#f5f4f0]">
+                          {role.qualifications.map((item) => (
+                            <li key={item}>{item}</li>
+                          ))}
+                        </ul>
+                      </div>
+                    </div>
+                    <div className="grid gap-6 md:grid-cols-2">
+                      <div>
+                        <h4 className="text-[12px] uppercase tracking-[0.35em] text-[#f5f4f0b3] mb-2">Nice to have</h4>
+                        <ul className="list-disc pl-5 space-y-1 text-[#f5f4f0] marker:text-[#f5f4f0]">
+                          {role.niceToHave.map((item) => (
+                            <li key={item}>{item}</li>
+                          ))}
+                        </ul>
+                      </div>
+                      <div className="flex flex-col justify-between">
+                        <p className="text-[14px] text-[#f5f4f0b3]">
+                          Interested? Email:
+                        </p>
+                        <a
+                          href={`mailto:srivastavan@berkeley.edu?subject=${encodeURIComponent(role.title + ' - Triage')}`}
+                          className="inline-flex items-center gap-2 px-6 py-2 border border-[#f5f4f0] text-[#f5f4f0] text-[13px] tracking-tight hover:bg-[#f5f4f0] hover:text-[#0a0a0a] transition-colors mt-4"
+                        >
+                          Apply for {role.title}
+                        </a>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
+            );
+          })}
+        </div>
+      </section>
+        </div>
       </div>
+
+      {/* Footer */}
+      <footer className="py-12 bg-[#0d0d0d] border-t border-[#1a1a1a]">
+        <div className="container-max">
+          <div className="flex items-center justify-between">
+            <div className="flex items-center gap-3">
+              <Image
+                src="/FullLogo_Transparent_NoBuffer (1) (1).png"
+                alt="Triage"
+                width={60}
+                height={16}
+                className="h-5 w-auto opacity-60"
+                style={{ objectFit: 'contain' }}
+              />
+              <span className="text-[14px] text-[#f5f4f0b3]" style={{ fontFamily: '-apple-system, SF Pro Display, system-ui, sans-serif' }}>
+                triage
+              </span>
+            </div>
+            <div className="text-[13px] text-[#f5f4f0b3]">
+              © 2025 Triage. All rights reserved.
+            </div>
+          </div>
+        </div>
+      </footer>
     </main>
   );
 }

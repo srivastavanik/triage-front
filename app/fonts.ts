@@ -1,16 +1,13 @@
-import { Inter, JetBrains_Mono } from 'next/font/google';
+import { Inter } from 'next/font/google';
+import { GeistMono } from 'geist/font/mono';
 
-// Inter as Akkurat alternative - Light (300) and Regular (400) weights
+// Inter for clean sans-serif typography (similar to Warp)
 export const akkurat = Inter({
   subsets: ['latin'],
-  weight: ['300', '400'], // Akkurat Light and Regular
+  weight: ['300', '400', '500'],
   display: 'swap',
+  variable: '--font-akkurat',
 });
 
-// JetBrains Mono as Fragment Mono alternative
-export const fragmentMono = JetBrains_Mono({
-  subsets: ['latin'],
-  weight: ['400', '500'],
-  variable: '--font-fragment',
-  display: 'swap',
-});
+// Geist Mono for code (Vercel's monospace font)
+export const geistMono = GeistMono;
