@@ -33,13 +33,12 @@ function ROIFormula() {
   
   return (
     <div ref={ref} className="py-8">
-      <div className="font-mono text-[14px] md:text-[16px] leading-relaxed">
+      <div className="text-[14px] md:text-[16px] leading-relaxed font-light">
         <motion.span
           initial={{ opacity: 0 }}
           animate={isInView ? { opacity: 1 } : {}}
           transition={{ duration: 0.3, delay: 5.2 }}
-          className={`inline-block mr-2 font-bold ${phase === 1 ? 'text-[#4d9375]' : 'text-text-primary'}`}
-          style={phase === 1 ? { textShadow: '0 0 20px rgba(77, 147, 117, 0.5)' } : {}}
+          className={`inline-block mr-1 font-medium ${phase === 1 ? 'bg-[#4d9375] text-[#000000] px-1.5 py-0.5' : 'text-text-primary'}`}
         >
           ROI
         </motion.span>
@@ -49,7 +48,7 @@ function ROIFormula() {
           transition={{ duration: 0.2, delay: 5.3 }}
           className="text-text-muted"
         >
-          ={' '}
+          {' '}={' '}
         </motion.span>
         <span className="text-text-muted">(</span>
         {terms.map((term, i) => (
@@ -129,22 +128,8 @@ export default function TeamsPage() {
     <main className="min-h-screen bg-[#000000] text-[#f5f4f0] font-sans selection:bg-[#C9A37E] selection:text-[#000000]">
       <SiteNav />
 
-      {/* Hero Section with Video Background */}
-      <section className="pt-40 pb-24 relative overflow-hidden">
-        {/* Video Background */}
-        <div className="absolute inset-0 z-0">
-          <video
-            autoPlay
-            muted
-            loop
-            playsInline
-            className="absolute inset-0 w-full h-full object-cover opacity-30"
-          >
-            <source src="/teams-hero.mp4" type="video/mp4" />
-          </video>
-          <div className="absolute inset-0 bg-gradient-to-b from-[#000000]/60 via-transparent to-[#000000]" />
-        </div>
-        
+      {/* Hero Section with Tan Background */}
+      <section className="pt-40 pb-24 relative bg-[#C9A37E]">
         <div className="container-max relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -152,15 +137,15 @@ export default function TeamsPage() {
             transition={{ duration: 0.6 }}
             className="max-w-4xl"
           >
-            <h1 className="text-[48px] lg:text-[72px] font-normal leading-[1.05] tracking-[-0.03em] mb-8">
+            <h1 className="text-[48px] lg:text-[72px] font-normal leading-[1.05] tracking-[-0.03em] mb-8 text-[#1a1a1a]">
               Security and economics for AI systems
             </h1>
-            <p className="text-[20px] lg:text-[24px] text-text-secondary leading-relaxed max-w-2xl mb-8">
+            <p className="text-[20px] lg:text-[24px] leading-relaxed max-w-2xl mb-8 text-[#2d2d2d]">
               Built for CISOs. Adopted by builders. <br />
-              <span className="text-text-primary">One platform for AI security outcomes.</span>
+              <span className="text-[#0a0a0a] font-medium">One platform for AI security outcomes.</span>
             </p>
             
-            <p className="text-[16px] text-text-muted leading-relaxed max-w-2xl">
+            <p className="text-[16px] leading-relaxed max-w-2xl text-[#3d3d3d]">
               Triage secures LLM-powered products across inference, retrieval, and training workflows. It works as a security control for traditional environments or as a daily engineering tool for teams shipping AI features. Same data, same controls, different ownership models.
             </p>
           </motion.div>
