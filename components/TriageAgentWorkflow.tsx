@@ -286,6 +286,14 @@ const COMPLETED_TASKS: Task[] = [
   { id: '7', name: 'Token Limit Guards', status: 'ready', additions: 31, deletions: 8, time: '45m' },
 ];
 
+const AVAILABLE_MODELS = [
+  'Opus 4.5',
+  'GPT 5.2',
+  'Gemini 3.0 Flash',
+  'Claude Sonnet 4',
+  'GPT 5.1 Codex',
+];
+
 export function TriageAgentWorkflow(): JSX.Element {
   const [scenarioIndex, setScenarioIndex] = useState(0);
   const [phase, setPhase] = useState<'thinking' | 'retrieving' | 'coding' | 'complete'>('thinking');
@@ -298,6 +306,31 @@ export function TriageAgentWorkflow(): JSX.Element {
   const [terminalLines, setTerminalLines] = useState<string[]>([]);
   const chatContainerRef = useRef<HTMLDivElement>(null);
   const terminalRef = useRef<HTMLDivElement>(null);
+  
+  // Agent count and model selection state
+  const [agentCount, setAgentCount] = useState(1);
+  const [selectedModels, setSelectedModels] = useState<string[]>(['Opus 4.5']);
+  const [showAgentSelector, setShowAgentSelector] = useState(false);
+  
+  // Update selected models when agent count changes
+  const handleAgentCountChange = (count: number) => {
+    setAgentCount(count);
+    setSelectedModels(prev => {
+      const newModels = [...prev];
+      while (newModels.length < count) {
+        newModels.push(AVAILABLE_MODELS[newModels.length % AVAILABLE_MODELS.length]);
+      }
+      return newModels.slice(0, count);
+    });
+  };
+  
+  const handleModelChange = (index: number, model: string) => {
+    setSelectedModels(prev => {
+      const newModels = [...prev];
+      newModels[index] = model;
+      return newModels;
+    });
+  };
 
   // Terminal test output lines for each scenario - aligned with Vitesse theme
   const TERMINAL_OUTPUTS: Record<string, string[]> = {
@@ -661,18 +694,66 @@ export function TriageAgentWorkflow(): JSX.Element {
               <div className="px-4 py-3 text-[14px] text-[#758575]">
                 Describe a security issue to investigate...
               </div>
-              <div className="px-4 py-2 border-t border-[#1a1a1a] flex items-center justify-between">
+              <div className="px-4 py-2 border-t border-[#1a1a1a] flex items-center justify-between relative">
+                {/* Agent count + Model selector */}
                 <div className="flex items-center gap-2">
-                  <span className="px-2 py-1 bg-[#121212] rounded text-[12px] text-[#dbd7caee] flex items-center gap-1">
-                    <span className="text-[#758575]">∞</span> Agent
-                  </span>
-                  <span className="text-[12px] text-[#758575] flex items-center gap-1">
-                    {scenario.model}
-                    <svg className="w-3 h-3" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+                  <button
+                    onClick={() => setShowAgentSelector(!showAgentSelector)}
+                    className="px-2 py-1 bg-[#1a1a1a] hover:bg-[#252525] rounded text-[12px] text-[#dbd7caee] flex items-center gap-1.5 transition-colors"
+                  >
+                    <span className="text-[#4d9375] font-medium">{agentCount}x</span>
+                    <span className="text-[#758575]">|</span>
+                    <span>{selectedModels[0]}</span>
+                    <svg className={`w-3 h-3 text-[#758575] transition-transform ${showAgentSelector ? 'rotate-180' : ''}`} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                       <path d="M6 9l6 6 6-6" />
                     </svg>
-                  </span>
+                  </button>
                 </div>
+                
+                {/* Dropdown for agent/model selection */}
+                {showAgentSelector && (
+                  <div className="absolute bottom-full left-4 mb-2 w-64 bg-[#1e1e1e] border border-[#2d2d2d] rounded-lg shadow-xl overflow-hidden z-50">
+                    {/* Agent count selector */}
+                    <div className="p-3 border-b border-[#2d2d2d]">
+                      <div className="text-[10px] uppercase tracking-wider text-[#758575] mb-2">Agent Instances</div>
+                      <div className="flex gap-1">
+                        {[1, 2, 3].map(count => (
+                          <button
+                            key={count}
+                            onClick={() => handleAgentCountChange(count)}
+                            className={`flex-1 py-1.5 rounded text-[12px] font-medium transition-colors ${
+                              agentCount === count
+                                ? 'bg-[#4d9375] text-[#0a0a0a]'
+                                : 'bg-[#121212] text-[#dbd7caee] hover:bg-[#252525]'
+                            }`}
+                          >
+                            {count}x
+                          </button>
+                        ))}
+                      </div>
+                    </div>
+                    
+                    {/* Model selectors for each agent */}
+                    <div className="p-3 space-y-2">
+                      <div className="text-[10px] uppercase tracking-wider text-[#758575] mb-2">Model Selection</div>
+                      {Array.from({ length: agentCount }).map((_, idx) => (
+                        <div key={idx} className="flex items-center gap-2">
+                          <span className="text-[11px] text-[#758575] w-5">#{idx + 1}</span>
+                          <select
+                            value={selectedModels[idx] || AVAILABLE_MODELS[0]}
+                            onChange={(e) => handleModelChange(idx, e.target.value)}
+                            className="flex-1 bg-[#121212] border border-[#2d2d2d] rounded px-2 py-1.5 text-[12px] text-[#dbd7caee] focus:outline-none focus:border-[#4d9375]"
+                          >
+                            {AVAILABLE_MODELS.map(model => (
+                              <option key={model} value={model}>{model}</option>
+                            ))}
+                          </select>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
+                )}
+                
                 <div className="w-6 h-6 rounded-full bg-[#121212] flex items-center justify-center">
                   <svg className="w-4 h-4 text-[#758575]" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
                     <line x1="12" y1="19" x2="12" y2="5" />
