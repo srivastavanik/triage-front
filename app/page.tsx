@@ -145,12 +145,26 @@ export default function Home() {
       {/* Announcement Bar */}
       <Link 
         href="/blog/triage-raises-1-5m" 
-        className="fixed top-0 left-0 right-0 z-[101] bg-[#f5f4f0] hover:bg-[#e8e7e3] transition-colors"
+        className="fixed top-0 left-0 right-0 z-[101] overflow-hidden"
       >
-        <div className="container-max">
-          <div className="flex items-center justify-center gap-3 py-2.5 text-[13px] text-[#222222]">
-            <span className="font-medium">Triage raises $1.5M Pre-Seed at a $12M valuation, led by BoxGroup</span>
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="text-[#222222]">
+        {/* Video Background */}
+        <video
+          autoPlay
+          muted
+          loop
+          playsInline
+          className="absolute inset-0 w-full h-full object-cover blur-sm scale-110"
+          style={{ objectPosition: 'center 20%' }}
+        >
+          <source src="/announcement-bg.mp4" type="video/mp4" />
+        </video>
+        {/* Overlay for contrast */}
+        <div className="absolute inset-0 bg-black/20" />
+        {/* Content */}
+        <div className="container-max relative z-10">
+          <div className="flex items-center justify-center gap-3 py-2.5 text-[13px] text-white">
+            <span className="font-medium drop-shadow-sm">Triage raises $1.5M Pre-Seed at a $12M valuation, led by BoxGroup</span>
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" className="text-white drop-shadow-sm">
               <path d="M7 17L17 7M17 7H7M17 7v10" />
             </svg>
           </div>
