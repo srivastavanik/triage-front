@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { motion, useInView } from 'framer-motion';
 import { useRef } from 'react';
 import { SiteNav } from '../../components/SiteNav';
+import { EconomicsGraph } from '../../components/EconomicsGraph';
 
 // ROI Animation Component
 function ROIFormula() {
@@ -129,7 +130,14 @@ export default function TeamsPage() {
       <SiteNav />
 
       {/* Hero Section */}
-      <section className="pt-40 pb-24 relative bg-[#0a0a0a]">
+      <section className="pt-40 pb-24 relative bg-[#0a0a0a] overflow-hidden">
+        {/* Right side economics graph animation */}
+        <div className="absolute top-0 right-0 w-1/2 h-full z-0">
+          <div className="absolute inset-0 bg-gradient-to-l from-white/5 to-transparent z-10" />
+          <div className="absolute inset-0 bg-gradient-to-b from-[#0a0a0a] via-transparent to-[#0a0a0a] z-10" />
+          <EconomicsGraph />
+        </div>
+
         <div className="container-max relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -142,7 +150,7 @@ export default function TeamsPage() {
             </h1>
             <p className="text-[20px] lg:text-[24px] leading-relaxed max-w-2xl mb-8 text-[#d8b78f]">
               Built for CISOs. Adopted by builders. <br />
-              <span className="text-[#C9A37E] font-medium">One platform for AI security outcomes.</span>
+              <span className="text-white font-medium drop-shadow-[0_0_15px_rgba(255,255,255,0.3)]">One platform for AI security outcomes.</span>
             </p>
             
             <p className="text-[16px] leading-relaxed max-w-2xl text-[#b89b70]">
