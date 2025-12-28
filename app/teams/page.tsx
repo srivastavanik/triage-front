@@ -1,22 +1,91 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { motion } from 'framer-motion';
+import { motion, useInView } from 'framer-motion';
+import { useRef } from 'react';
 import { SiteNav } from '../../components/SiteNav';
 
-export default function TeamsPage() {
-  const [activeModel, setActiveModel] = useState<number>(0);
+// ROI Animation Component
+function ROIFormula() {
+  const ref = useRef(null);
+  const isInView = useInView(ref, { once: true, amount: 0.5 });
+  const [phase, setPhase] = useState(0);
+  
+  const terms = [
+    { text: 'reduced incidents', delay: 0 },
+    { text: ' + ', delay: 0.8, isOperator: true },
+    { text: 'reduced engineering time', delay: 1.2 },
+    { text: ' + ', delay: 2.0, isOperator: true },
+    { text: 'reduced inference waste', delay: 2.4 },
+    { text: ' + ', delay: 3.2, isOperator: true },
+    { text: 'reduced churn', delay: 3.6 },
+    { text: ' − ', delay: 4.2, isOperator: true },
+    { text: 'platform cost', delay: 4.6 },
+  ];
+  
+  useEffect(() => {
+    if (isInView) {
+      const timer = setTimeout(() => setPhase(1), 5500);
+      return () => clearTimeout(timer);
+    }
+  }, [isInView]);
+  
+  return (
+    <div ref={ref} className="py-8">
+      <div className="font-mono text-[14px] md:text-[16px] leading-relaxed">
+        <motion.span
+          initial={{ opacity: 0 }}
+          animate={isInView ? { opacity: 1 } : {}}
+          transition={{ duration: 0.3, delay: 5.2 }}
+          className={`inline-block mr-2 font-bold ${phase === 1 ? 'text-[#4d9375]' : 'text-text-primary'}`}
+          style={phase === 1 ? { textShadow: '0 0 20px rgba(77, 147, 117, 0.5)' } : {}}
+        >
+          ROI
+        </motion.span>
+        <motion.span
+          initial={{ opacity: 0 }}
+          animate={isInView ? { opacity: 1 } : {}}
+          transition={{ duration: 0.2, delay: 5.3 }}
+          className="text-text-muted"
+        >
+          ={' '}
+        </motion.span>
+        <span className="text-text-muted">(</span>
+        {terms.map((term, i) => (
+          <motion.span
+            key={i}
+            initial={{ opacity: 0 }}
+            animate={isInView ? { opacity: 1 } : {}}
+            transition={{ duration: 0.3, delay: term.delay }}
+            className={term.isOperator ? 'text-text-muted' : 'text-text-primary'}
+          >
+            {term.text}
+          </motion.span>
+        ))}
+        <motion.span
+          initial={{ opacity: 0 }}
+          animate={isInView ? { opacity: 1 } : {}}
+          transition={{ duration: 0.2, delay: 5.0 }}
+          className="text-text-muted"
+        >
+          )
+        </motion.span>
+      </div>
+    </div>
+  );
+}
 
+export default function TeamsPage() {
   const OPERATING_MODELS = [
     {
       title: 'Security-owned deployment',
       role: 'CISO / AppSec / SecEng',
       desc: 'A security team owns policy and risk posture, and uses Triage to monitor AI execution paths, investigate incidents, and enforce controls across products.',
-      economics: [
-        'Reduces breach probability by turning opaque behavior into traces',
-        'Lowers incident response cost by shortening RCA time',
-        'Standardizes controls without multiplying headcount',
+      changes: [
+        'Opaque model behavior becomes inspectable traces',
+        'Incident response time drops dramatically',
+        'Controls scale without multiplying headcount',
       ],
       outputs: [
         'Policy gates for prompt/tool behavior',
@@ -28,29 +97,29 @@ export default function TeamsPage() {
       title: 'Engineering-owned deployment',
       role: 'Platform / Infra / Product',
       desc: 'Engineers use Triage as part of shipping. They instrument AI features, observe failures and regressions, and remediate issues before they become incidents.',
-      economics: [
-        'Cuts wasted spend from retries & bad routing',
-        'Prevents quality regressions hitting retention',
-        'Speeds delivery by making failures reproducible',
+      changes: [
+        'Failures become reproducible, not anecdotal',
+        'Regressions get caught before shipping',
+        'Wasted spend on retries disappears',
       ],
       outputs: [
         'Debuggable traces for agent behavior',
         'Guardrails in CI/CD for prompt changes',
-        'Lower latency/cost via tuning',
+        'Lower latency and cost via tuning',
       ],
     },
     {
       title: 'Shared deployment',
       role: 'Recommended',
       desc: 'Security defines the policy and severity model. Engineering owns uptime, quality, and velocity. Triage becomes the shared runtime layer.',
-      economics: [
-        'Less organizational drag & fewer handoffs',
-        'Controls that do not block delivery',
-        'A single trace format for audit & incident response',
+      changes: [
+        'Fewer handoffs, fewer "can\'t reproduce" loops',
+        'Controls that ship with code, not against it',
+        'One trace format for audit and incident response',
       ],
       outputs: [
-        'Unified governance & velocity',
-        'Shared visibility into risk & reliability',
+        'Unified governance and velocity',
+        'Shared visibility into risk and reliability',
         'Faster feedback loops for all teams',
       ],
     },
@@ -60,10 +129,21 @@ export default function TeamsPage() {
     <main className="min-h-screen bg-[#000000] text-[#f5f4f0] font-sans selection:bg-[#C9A37E] selection:text-[#000000]">
       <SiteNav />
 
-      {/* Hero Section */}
-      <section className="pt-40 pb-20 relative overflow-hidden">
-        {/* Background Gradients */}
-        <div className="absolute top-0 left-0 right-0 h-[500px] bg-gradient-to-b from-[#1a1a1a] to-transparent opacity-20 pointer-events-none" />
+      {/* Hero Section with Video Background */}
+      <section className="pt-40 pb-24 relative overflow-hidden">
+        {/* Video Background */}
+        <div className="absolute inset-0 z-0">
+          <video
+            autoPlay
+            muted
+            loop
+            playsInline
+            className="absolute inset-0 w-full h-full object-cover opacity-30"
+          >
+            <source src="/teams-hero.mp4" type="video/mp4" />
+          </video>
+          <div className="absolute inset-0 bg-gradient-to-b from-[#000000]/60 via-transparent to-[#000000]" />
+        </div>
         
         <div className="container-max relative z-10">
           <motion.div
@@ -75,37 +155,28 @@ export default function TeamsPage() {
             <h1 className="text-[48px] lg:text-[72px] font-normal leading-[1.05] tracking-[-0.03em] mb-8">
               Security and economics for AI systems
             </h1>
-            <p className="text-[20px] lg:text-[24px] text-text-secondary leading-relaxed max-w-2xl mb-12">
+            <p className="text-[20px] lg:text-[24px] text-text-secondary leading-relaxed max-w-2xl mb-8">
               Built for CISOs. Adopted by builders. <br />
               <span className="text-text-primary">One platform for AI security outcomes.</span>
             </p>
             
-            <p className="text-[16px] text-text-muted leading-relaxed max-w-2xl mb-12">
+            <p className="text-[16px] text-text-muted leading-relaxed max-w-2xl">
               Triage secures LLM-powered products across inference, retrieval, and training workflows. It works as a security control for traditional environments or as a daily engineering tool for teams shipping AI features. Same data, same controls, different ownership models.
             </p>
-
-            <div className="flex flex-col sm:flex-row gap-4">
-              <a href="mailto:srivastavan@berkeley.edu" className="bg-[#f5f4f0] text-[#000000] px-8 py-4 rounded-lg font-medium hover:bg-[#dbd7ca] transition-colors text-center">
-                Request access
-              </a>
-              <Link href="/#product" className="px-8 py-4 rounded-lg font-medium border border-[#2d2d2d] hover:bg-[#1a1a1a] transition-colors text-center text-text-secondary">
-                See how teams deploy it
-              </Link>
-            </div>
           </motion.div>
         </div>
       </section>
 
-      {/* Core Positioning */}
+      {/* Core Positioning + Use Cases Merged */}
       <section className="py-24 border-t border-[#1a1a1a] bg-[#0a0a0a]">
         <div className="container-max">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16">
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 mb-20">
             <div>
               <h2 className="text-[32px] lg:text-[40px] font-normal leading-[1.1] tracking-[-0.02em] mb-8">
                 Not a single "team product." A security system that adapts to how you run.
               </h2>
             </div>
-            <div className="space-y-8">
+            <div className="space-y-6">
               <p className="text-text-secondary text-[16px] leading-relaxed">
                 AI changes the shape of the attack surface. The failure modes are not confined to code. They include prompts, tool calls, retrieval chains, data curation, evaluation harnesses, and model routing.
               </p>
@@ -113,17 +184,30 @@ export default function TeamsPage() {
                 Triage is intentionally malleable: it can be owned by a security organization, embedded into a platform team, or used directly by the engineers building AI systems.
               </p>
               
-              <div className="space-y-4 pt-4">
-                {[
-                  'Centralized governance when you need policy, auditability, and control.',
-                  'Developer-native workflows when you need speed, iteration, and coverage.',
-                  'A shared source of truth so security and engineering stop arguing about what happened.'
-                ].map((item, i) => (
-                  <div key={i} className="flex gap-3">
-                    <div className="w-1.5 h-1.5 rounded-full bg-[#C9A37E] mt-2.5 shrink-0" />
-                    <p className="text-text-primary">{item}</p>
-                  </div>
-                ))}
+              <div className="space-y-3 pt-4">
+                <p className="text-text-primary">Centralized governance when you need policy, auditability, and control.</p>
+                <p className="text-text-primary">Developer-native workflows when you need speed, iteration, and coverage.</p>
+                <p className="text-text-primary">A shared source of truth so security and engineering stop arguing about what happened.</p>
+              </div>
+            </div>
+          </div>
+          
+          {/* Merged Use Cases */}
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 pt-12 border-t border-[#1a1a1a]">
+            <div>
+              <h3 className="text-[18px] font-medium text-text-primary mb-5">For traditional security teams</h3>
+              <div className="space-y-3">
+                <p className="text-[15px] text-text-secondary">Centralized AI telemetry, investigations, and policy enforcement</p>
+                <p className="text-[15px] text-text-secondary">Runtime guardrails for tool use, data access, and exfiltration patterns</p>
+                <p className="text-[15px] text-text-secondary">Audit-ready evidence across inference, retrieval, and training pipelines</p>
+              </div>
+            </div>
+            <div>
+              <h3 className="text-[18px] font-medium text-text-primary mb-5">For startups and product teams</h3>
+              <div className="space-y-3">
+                <p className="text-[15px] text-text-secondary">Trace-driven debugging of agents and RAG systems</p>
+                <p className="text-[15px] text-text-secondary">Regression detection for prompts, retrieval, and routing</p>
+                <p className="text-[15px] text-text-secondary">Cost controls across tokens, latency, retries, and provider usage</p>
               </div>
             </div>
           </div>
@@ -142,13 +226,13 @@ export default function TeamsPage() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-px bg-[#1a1a1a]">
             {OPERATING_MODELS.map((model, idx) => (
               <div 
                 key={idx}
-                className="bg-[#0a0a0a] border border-[#1a1a1a] rounded-xl p-8 flex flex-col hover:border-[#2d2d2d] transition-colors"
+                className="bg-[#0a0a0a] p-8 flex flex-col"
               >
-                <div className="mb-6">
+                <div className="mb-8">
                   <div className="text-[11px] font-bold uppercase tracking-widest text-[#C9A37E] mb-3">
                     {model.role}
                   </div>
@@ -160,28 +244,26 @@ export default function TeamsPage() {
                   </p>
                 </div>
 
-                <div className="space-y-6 mt-auto">
+                <div className="space-y-8 mt-auto">
                   <div>
-                    <h4 className="text-[13px] font-medium text-text-primary mb-3">Why it wins economically</h4>
-                    <ul className="space-y-2">
-                      {model.economics.map((item, i) => (
-                        <li key={i} className="text-[13px] text-text-muted flex gap-2">
-                          <span className="text-[#2d2d2d]">•</span>
+                    <h4 className="text-[13px] font-medium text-text-primary mb-4">What changes for you</h4>
+                    <div className="space-y-2">
+                      {model.changes.map((item, i) => (
+                        <p key={i} className="text-[13px] text-text-muted">
                           {item}
-                        </li>
+                        </p>
                       ))}
-                    </ul>
+                    </div>
                   </div>
                   <div>
-                    <h4 className="text-[13px] font-medium text-text-primary mb-3">Typical outputs</h4>
-                    <ul className="space-y-2">
+                    <h4 className="text-[13px] font-medium text-text-primary mb-4">Typical outputs</h4>
+                    <div className="space-y-2">
                       {model.outputs.map((item, i) => (
-                        <li key={i} className="text-[13px] text-text-muted flex gap-2">
-                          <span className="text-[#2d2d2d]">•</span>
+                        <p key={i} className="text-[13px] text-text-muted">
                           {item}
-                        </li>
+                        </p>
                       ))}
-                    </ul>
+                    </div>
                   </div>
                 </div>
               </div>
@@ -198,19 +280,15 @@ export default function TeamsPage() {
               <h2 className="text-[40px] lg:text-[56px] font-normal leading-[1.05] tracking-[-0.03em] mb-8">
                 Security that pays for itself
               </h2>
-              <p className="text-text-secondary text-[18px] leading-relaxed mb-8">
+              <p className="text-text-secondary text-[18px] leading-relaxed mb-6">
                 AI systems incur costs in places most teams do not measure: inference waste, retrieval noise, tool failures, latent prompt regressions, and incident response time. Triage makes these measurable and controllable.
               </p>
               
-              <div className="p-6 bg-[#121212] border border-[#1a1a1a] rounded-lg">
-                <h4 className="text-[14px] font-bold uppercase tracking-wider text-[#C9A37E] mb-4">Simple ROI Framing</h4>
-                <p className="font-mono text-[13px] text-text-primary leading-relaxed">
-                  ROI = (reduced incidents + reduced engineering time + reduced inference waste + reduced churn) − platform cost
-                </p>
-              </div>
+              {/* Animated ROI Formula */}
+              <ROIFormula />
             </div>
 
-            <div className="space-y-px bg-[#1a1a1a] border border-[#1a1a1a] rounded-xl overflow-hidden">
+            <div className="border border-[#1a1a1a] overflow-hidden">
               {[
                 { title: 'Risk-adjusted loss', desc: 'Fewer successful exploits, smaller blast radius, higher confidence in control effectiveness.' },
                 { title: 'Engineering time', desc: 'Faster debugging, fewer escalations, fewer recurring failure patterns.' },
@@ -218,7 +296,7 @@ export default function TeamsPage() {
                 { title: 'Support and uptime', desc: 'Fewer "AI did something weird" tickets, less downtime, fewer rollbacks.' },
                 { title: 'Compliance overhead', desc: 'Evidence-quality telemetry for audits and reviews, without manual log stitching.' },
               ].map((item, i) => (
-                <div key={i} className="p-6 bg-[#0a0a0a] flex flex-col md:flex-row md:items-center gap-4 hover:bg-[#121212] transition-colors">
+                <div key={i} className="p-6 bg-[#0a0a0a] border-b border-[#1a1a1a] last:border-b-0 flex flex-col md:flex-row md:items-center gap-4">
                   <h3 className="w-48 text-[15px] font-medium text-text-primary shrink-0">{item.title}</h3>
                   <p className="text-[14px] text-text-muted">{item.desc}</p>
                 </div>
@@ -228,84 +306,53 @@ export default function TeamsPage() {
         </div>
       </section>
 
-      {/* Persona Grid */}
+      {/* Persona Grid - Redesigned */}
       <section className="py-32 bg-[#000000]">
         <div className="container-max">
-          <h2 className="text-[32px] font-normal tracking-[-0.02em] mb-12">Who uses Triage</h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <h2 className="text-[36px] font-normal tracking-[-0.02em] mb-16">Who uses Triage</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-[#1a1a1a]">
             {[
               {
                 role: 'CISO / Security Leadership',
-                points: ['Own policy, reporting, and risk posture.', 'Get evidence, not opinions.', 'Prove controls work at runtime.']
+                tagline: 'Own the risk posture',
+                points: ['Own policy, reporting, and risk posture for AI products.', 'Get evidence, not opinions: what the model saw, what it did, what tools ran.', 'Prove controls work at runtime.']
               },
               {
                 role: 'AppSec / Product Security',
-                points: ['Turn AI behavior into enforceable rules.', 'Catch regressions before they ship.', 'Reduce "unknown unknowns".']
+                tagline: 'Make AI testable',
+                points: ['Turn AI behavior into enforceable, testable rules.', 'Catch prompt and retrieval regressions before they ship.', 'Reduce "unknown unknowns" in agent workflows.']
               },
               {
                 role: 'Platform / Infrastructure',
-                points: ['Standardize instrumentation across teams.', 'Reduce cost variance & timeouts.', 'Monitor reliability across providers.']
+                tagline: 'Standardize instrumentation',
+                points: ['Standardize instrumentation and guardrails across teams.', 'Reduce cost variance, timeouts, and provider failure modes.', 'Monitor reliability across model providers and tool chains.']
               },
               {
                 role: 'AI Engineers',
-                points: ['Debug agent behavior with context.', 'Validate retrieval quality.', 'Close loop between evals & prod.']
+                tagline: 'Debug with context',
+                points: ['Debug agent behavior with full execution context.', 'Validate retrieval quality and prevent data leakage.', 'Close the loop between eval failures and production traces.']
               }
             ].map((card, i) => (
-              <div key={i} className="bg-[#0a0a0a] border border-[#1a1a1a] rounded-lg p-6 flex flex-col h-full hover:border-[#2d2d2d] transition-colors">
-                <h3 className="text-[16px] font-bold text-text-primary mb-4">{card.role}</h3>
-                <ul className="space-y-3 mt-auto">
+              <div key={i} className="bg-[#0a0a0a] p-10 flex flex-col">
+                <div className="mb-6">
+                  <p className="text-[11px] uppercase tracking-widest text-text-muted mb-2">{card.tagline}</p>
+                  <h3 className="text-[20px] font-medium text-text-primary">{card.role}</h3>
+                </div>
+                <div className="space-y-3 mt-auto">
                   {card.points.map((pt, j) => (
-                    <li key={j} className="text-[13px] text-text-muted leading-relaxed">
+                    <p key={j} className="text-[14px] text-text-secondary leading-relaxed">
                       {pt}
-                    </li>
+                    </p>
                   ))}
-                </ul>
+                </div>
               </div>
             ))}
           </div>
         </div>
       </section>
 
-      {/* Use Cases */}
-      <section className="py-24 bg-[#0a0a0a] border-t border-[#1a1a1a]">
-        <div className="container-max">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-12">
-            <div>
-              <h3 className="text-[20px] font-medium text-text-primary mb-6">For traditional security teams</h3>
-              <ul className="space-y-4">
-                {[
-                  'Centralized AI telemetry, investigations, and policy enforcement',
-                  'Runtime guardrails for tool use, data access, and exfiltration patterns',
-                  'Audit-ready evidence across inference, retrieval, and training pipelines'
-                ].map((item, i) => (
-                  <li key={i} className="flex gap-3 text-[15px] text-text-secondary">
-                    <span className="text-[#C9A37E] mt-1.5">•</span>
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            </div>
-            <div>
-              <h3 className="text-[20px] font-medium text-text-primary mb-6">For startups and product teams</h3>
-              <ul className="space-y-4">
-                {[
-                  'Trace-driven debugging of agents and RAG systems',
-                  'Regression detection for prompts, retrieval, and routing',
-                  'Cost controls across tokens, latency, retries, and provider usage'
-                ].map((item, i) => (
-                  <li key={i} className="flex gap-3 text-[15px] text-text-secondary">
-                    <span className="text-[#C9A37E] mt-1.5">•</span>
-                    {item}
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      {/* How it lands / Adoption */}
-      <section className="py-32 bg-[#000000]">
+      {/* How it lands / Adoption - Simplified */}
+      <section className="py-32 bg-[#0a0a0a] border-t border-[#1a1a1a]">
         <div className="container-max">
           <div className="max-w-2xl mb-16">
             <h2 className="text-[36px] font-normal tracking-[-0.02em] mb-4">Adoption that matches your constraints</h2>
@@ -314,29 +361,29 @@ export default function TeamsPage() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-            <div className="border border-[#1a1a1a] rounded-xl p-8 bg-gradient-to-b from-[#0a0a0a] to-[#000000]">
-              <div className="text-[12px] uppercase tracking-wider text-[#C9A37E] mb-4">Start from Governance</div>
-              <ul className="space-y-3">
-                <li className="text-text-primary text-[15px]">1. Define policies and severity thresholds</li>
-                <li className="text-text-primary text-[15px]">2. Instrument critical systems</li>
-                <li className="text-text-primary text-[15px]">3. Expand coverage with standard controls</li>
-              </ul>
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-[#1a1a1a]">
+            <div className="bg-[#000000] p-10">
+              <div className="text-[12px] uppercase tracking-wider text-[#C9A37E] mb-6">Start from Governance</div>
+              <div className="space-y-4">
+                <p className="text-text-primary text-[15px]">1. Define policies and severity thresholds</p>
+                <p className="text-text-primary text-[15px]">2. Instrument critical systems</p>
+                <p className="text-text-primary text-[15px]">3. Expand coverage with standard controls</p>
+              </div>
             </div>
-            <div className="border border-[#1a1a1a] rounded-xl p-8 bg-gradient-to-b from-[#0a0a0a] to-[#000000]">
-              <div className="text-[12px] uppercase tracking-wider text-[#C9A37E] mb-4">Start from Engineering</div>
-              <ul className="space-y-3">
-                <li className="text-text-primary text-[15px]">1. Instrument one high-traffic AI workflow</li>
-                <li className="text-text-primary text-[15px]">2. Use traces to remove latency/failure hotspots</li>
-                <li className="text-text-primary text-[15px]">3. Add guardrails once you have observability</li>
-              </ul>
+            <div className="bg-[#000000] p-10">
+              <div className="text-[12px] uppercase tracking-wider text-[#C9A37E] mb-6">Start from Engineering</div>
+              <div className="space-y-4">
+                <p className="text-text-primary text-[15px]">1. Instrument one high-traffic AI workflow</p>
+                <p className="text-text-primary text-[15px]">2. Use traces to remove latency/failure hotspots</p>
+                <p className="text-text-primary text-[15px]">3. Add guardrails once you have observability</p>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
       {/* Closing CTA */}
-      <section className="py-32 border-t border-[#1a1a1a] bg-[#0a0a0a] text-center">
+      <section className="py-32 border-t border-[#1a1a1a] bg-[#000000] text-center">
         <div className="container-max max-w-3xl mx-auto">
           <h2 className="text-[40px] lg:text-[48px] font-normal leading-[1.1] tracking-[-0.02em] mb-6">
             Deploy it as a security product or an engineering system.
@@ -344,14 +391,14 @@ export default function TeamsPage() {
           <p className="text-[20px] text-text-secondary mb-10">
             The outcome is the same: Lower AI risk. Lower operating cost. Faster iteration.
           </p>
-          <a href="mailto:srivastavan@berkeley.edu" className="inline-block bg-[#f5f4f0] text-[#000000] px-10 py-4 rounded-lg font-medium hover:bg-[#dbd7ca] transition-colors">
+          <a href="mailto:srivastavan@berkeley.edu" className="inline-block bg-[#f5f4f0] text-[#000000] px-10 py-4 font-medium hover:bg-[#dbd7ca] transition-colors">
             Talk to us
           </a>
         </div>
       </section>
 
       {/* FAQ */}
-      <section className="py-24 bg-[#000000] border-t border-[#1a1a1a]">
+      <section className="py-24 bg-[#0a0a0a] border-t border-[#1a1a1a]">
         <div className="container-max max-w-3xl mx-auto space-y-12">
           {[
             {
@@ -375,8 +422,7 @@ export default function TeamsPage() {
         </div>
       </section>
       
-      {/* Footer is handled by layout/page structure, but we can add standard footer here if needed or let layout handle it. 
-          Assuming standard footer is globally applied or manually added. Adding standard footer structure here to match other pages. */}
+      {/* Footer */}
       <footer className="py-12 border-t border-[#1a1a1a] bg-[#0d0d0d]">
         <div className="container-max">
           <div className="flex flex-col md:flex-row justify-between items-center gap-6">
@@ -394,4 +440,3 @@ export default function TeamsPage() {
     </main>
   );
 }
-
