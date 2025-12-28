@@ -505,10 +505,7 @@ export function TraceExplorerDemo({ scenario = 0 }: TraceExplorerDemoProps): JSX
                     <td className="px-4 py-2.5 text-text-primary font-medium text-[11px]">{trace.provider}</td>
                     <td className="px-4 py-2.5">
                       <span className={`text-[10px] ${
-                        trace.status === 'error' ? 'text-[#cb7676]' :
-                        trace.status === 'timeout' ? 'text-text-muted' :
-                        trace.status === 'rate_limited' ? 'text-text-muted' :
-                        'text-[#4d9375]'
+                        trace.status === 'error' ? 'text-[#cb7676]' : 'text-[#4d9375]'
                       }`}>
                         {trace.status}
                       </span>

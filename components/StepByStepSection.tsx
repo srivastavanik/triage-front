@@ -1,5 +1,6 @@
 'use client';
 
+import type { JSX } from 'react';
 import { ReactNode, useState } from 'react';
 import { motion } from 'framer-motion';
 
