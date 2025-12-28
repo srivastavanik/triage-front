@@ -11,6 +11,7 @@ type SiteNavProps = {
 
 const LINKS = [
   { href: '/pricing', label: 'Pricing' },
+  { href: '/teams', label: 'Teams' },
   { href: '/careers', label: 'Careers' },
   { href: '/blog', label: 'Blog' },
 ];
