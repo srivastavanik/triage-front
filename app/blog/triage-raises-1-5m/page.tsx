@@ -311,7 +311,7 @@ export default function BlogPost(): JSX.Element {
               </span>
             </Link>
             <p className="text-text-muted text-[13px]">
-              © 2024 Triage. All rights reserved.
+              © 2025 Triage. All rights reserved.
             </p>
           </div>
         </div>
