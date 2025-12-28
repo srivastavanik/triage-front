@@ -117,6 +117,7 @@ export default function Careers(): JSX.Element {
               src="/careers-hero.jpg"
               alt="Triage team working session"
               fill
+              sizes="100vw"
               className="object-cover"
               priority
             />

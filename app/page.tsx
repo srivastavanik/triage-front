@@ -296,6 +296,7 @@ export default function Home() {
                 src="/wider.png"
                 alt=""
                 fill
+                sizes="100vw"
                 className="object-cover object-center"
                 priority
               />
@@ -349,22 +350,17 @@ export default function Home() {
                 { src: '/user_logos/amazon-logo-black-transparent-1.png', alt: 'Amazon', scale: 1.0 },
                 { src: '/user_logos/novita-ai-logo-png_seeklogo-611671 (1).png', alt: 'Novita', scale: 1.05 },
               ]).flat().map((logo, i) => (
-                <div key={i} className="logo-item h-14 w-[150px] flex items-center justify-center shrink-0">
-                  <Image
+                <div 
+                  key={i} 
+                  className="logo-item h-14 w-[150px] flex items-center justify-center shrink-0"
+                  style={{ transform: `scale(${(logo as any).scale ?? 1})`, transformOrigin: 'center' }}
+                >
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
                     src={logo.src}
                     alt={logo.alt}
-                    width={150}
-                    height={34}
-                    className="w-auto transition-all duration-300"
-                    style={{
-                      objectFit: 'contain', 
-                      filter: 'brightness(0) invert(1)', 
-                      height: '34px',
-                      maxHeight: '100%',
-                      maxWidth: '150px',
-                      transform: `scale(${(logo as any).scale ?? 1})`,
-                      transformOrigin: 'center',
-                    }}
+                    className="h-[34px] w-auto max-h-full max-w-[150px] object-contain transition-all duration-300"
+                    style={{ filter: 'brightness(0) invert(1)' }}
                   />
               </div>
             ))}
@@ -484,6 +480,7 @@ export default function Home() {
                 src="/p2.png"
                 alt=""
                 fill
+                sizes="100vw"
                 className="object-cover object-center"
                 priority
               />
@@ -556,6 +553,7 @@ export default function Home() {
                   src="/p3.jpg"
                   alt=""
                   fill
+                  sizes="(max-width: 768px) 100vw, 50vw"
                   className="object-cover"
                   style={{ objectPosition: 'center 40%' }}
                 />

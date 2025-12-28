@@ -113,6 +113,9 @@ function formatRelativeTime(date: Date): string {
 // ============================================================================
 
 const MODELS = ['gpt-5.2-pro', 'gpt-5.1-codex-max', 'claude-sonnet-4-5-20250929', 'claude-opus-4-5-20251101', 'gemini-3-pro-preview', 'gemini-3-flash-preview', 'grok-4-1-fast-reasoning'];
+
+// Fixed base time for SSR/client consistency (avoids hydration mismatch)
+const BASE_TIME = new Date('2025-12-28T12:00:00Z').getTime();
 const ROUTES = ['/chat', '/analysis', '/code-gen', '/search', '/summarize'];
 const USERS = ['user_8a9b', 'user_2c3d', 'user_9e1f', 'user_4g5h', 'internal_bot'];
 
@@ -216,7 +219,7 @@ function generateTrace(seed: number): Trace {
   
   return {
     id: `trc_${Math.floor(seeded01(seed + 5) * 1000000).toString(36)}`,
-    timestamp: new Date(Date.now() - seed * 8000),
+    timestamp: new Date(BASE_TIME - seed * 8000),
     model,
     route: ROUTES[Math.floor(seeded01(seed + 6) * ROUTES.length)],
     user: USERS[Math.floor(seeded01(seed + 7) * USERS.length)],
@@ -252,7 +255,7 @@ function generateGeneration(seed: number): Generation {
   
   return {
     id: `gen_${Math.floor(seeded01(seed + 2) * 1000000).toString(36)}`,
-    timestamp: new Date(Date.now() - seed * 12000),
+    timestamp: new Date(BASE_TIME - seed * 12000),
     model: MODELS[Math.floor(seeded01(seed + 3) * MODELS.length)],
     prompt: PROMPTS[promptIdx],
     completion: safety === 'blocked' ? '[BLOCKED: Policy violation detected]' : COMPLETIONS[promptIdx],
@@ -283,7 +286,7 @@ function generateActivity(seed: number): ActivityEvent {
     id: `evt_${seed}`,
     type,
     message: messages[type][Math.floor(seeded01(seed + 2) * messages[type].length)],
-    timestamp: new Date(Date.now() - seed * 3000)
+    timestamp: new Date(BASE_TIME - seed * 3000)
   };
 }
 

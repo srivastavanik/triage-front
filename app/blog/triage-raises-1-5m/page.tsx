@@ -56,7 +56,7 @@ export default function BlogPost(): JSX.Element {
               className="prose prose-invert prose-lg max-w-none"
             >
               <p className="text-text-secondary text-[18px] leading-[1.8] mb-8">
-                Triage has raised $1.5M in pre-seed funding to build an AI-native security and observability platform for teams shipping LLM-powered products. The round was led by BoxGroup, with participation from Precursor Ventures and notable angels including Zach Lloyd (CEO, Warp.dev), Michael Fertik (First ever investor in AnySphere), Bill Shope (Tidal Partners), Niklas de la Motte, and Cory Levy (Z Fellows).
+                Triage has raised $1.5M in pre-seed funding to build an AI-native security and observability platform for teams shipping LLM-powered products. The round was led by <a href="https://www.boxgroup.com/" target="_blank" rel="noopener noreferrer" className="underline hover:text-text-primary transition-colors">BoxGroup</a>, with participation from <a href="https://precursorvc.com/" target="_blank" rel="noopener noreferrer" className="underline hover:text-text-primary transition-colors">Precursor Ventures</a> and notable angels including Zach Lloyd (CEO, Warp.dev), Michael Fertik (First ever investor in AnySphere), Bill Shope (Tidal Partners), Niklas de la Motte, and Cory Levy (Z Fellows).
               </p>
 
               <p className="text-text-tertiary text-[17px] leading-[1.8] mb-12">
