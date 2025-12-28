@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef, useCallback } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { motion, useScroll, useSpring } from 'framer-motion';
@@ -22,6 +22,50 @@ export default function Home() {
   const [detectProgress, setDetectProgress] = useState(0);
   const [testProgress, setTestProgress] = useState(0);
   const { scrollYProgress } = useScroll();
+  
+  // Video ping-pong loop
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const [videoDirection, setVideoDirection] = useState<'forward' | 'backward'>('forward');
+  
+  // Handle video ping-pong playback
+  useEffect(() => {
+    const video = videoRef.current;
+    if (!video) return;
+    
+    let animationId: number;
+    const step = 1 / 30; // ~30fps for smooth reverse
+    
+    const animateBackward = () => {
+      if (!video || videoDirection !== 'backward') return;
+      
+      if (video.currentTime <= 0.1) {
+        // Reached start, switch to forward
+        setVideoDirection('forward');
+        video.play();
+        return;
+      }
+      
+      video.currentTime = Math.max(0, video.currentTime - step);
+      animationId = requestAnimationFrame(animateBackward);
+    };
+    
+    const handleEnded = () => {
+      video.pause();
+      setVideoDirection('backward');
+    };
+    
+    if (videoDirection === 'backward') {
+      video.pause();
+      animationId = requestAnimationFrame(animateBackward);
+    }
+    
+    video.addEventListener('ended', handleEnded);
+    
+    return () => {
+      video.removeEventListener('ended', handleEnded);
+      if (animationId) cancelAnimationFrame(animationId);
+    };
+  }, [videoDirection]);
 
   // Auto-cycle detect steps with progress
   useEffect(() => {
@@ -147,11 +191,11 @@ export default function Home() {
         href="/blog/triage-raises-1-5m" 
         className="fixed top-0 left-0 right-0 z-[101] overflow-hidden h-[40px] bg-[#1a1a1a]"
       >
-        {/* Video Background */}
+        {/* Video Background - Ping-pong loop */}
         <video
+          ref={videoRef}
           autoPlay
           muted
-          loop
           playsInline
           className="absolute inset-0 w-full h-full object-cover blur-sm scale-150"
           style={{ objectPosition: 'center 50%' }}
