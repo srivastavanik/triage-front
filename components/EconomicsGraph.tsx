@@ -14,59 +14,59 @@ export function EconomicsGraph() {
 
     let animationFrameId: number;
     let progress = 0;
-    const duration = 180; // Total frames for the animation (~3 seconds at 60fps)
+    const duration = 140; // Faster animation
     
     const resize = () => {
       canvas.width = canvas.offsetWidth;
       canvas.height = canvas.offsetHeight;
     };
 
-    // Cubic easing out function
     const easeOutCubic = (t: number) => 1 - Math.pow(1 - t, 3);
 
     const getPoint = (t: number, width: number, height: number) => {
-      const x = t * width;
+      // Start from roughly 15% of the container width (to avoid text)
+      // and 70% of the height.
+      // Move towards 100% width and 10% height.
+      const startX = width * 0.15;
+      const endX = width * 1.1; // Go slightly off screen
+      const startY = height * 0.75;
+      const endY = height * 0.05;
       
-      // A smooth curve that goes up, down, up, and back down
-      // Using sine waves with an envelope to make it smooth
-      const centerY = height * 0.5;
-      const amplitude = height * 0.25;
+      const x = startX + t * (endX - startX);
       
-      // Main frequency components
-      const curve = Math.sin(t * Math.PI * 2.5); // 1.25 full cycles
+      // Base linear path
+      let y = startY + t * (endY - startY);
       
-      // Fade out at the very edges
-      const envelope = Math.sin(t * Math.PI);
-      
-      const y = centerY - (curve * amplitude * envelope);
+      // Add a smooth "S" bend
+      const curve = Math.sin(t * Math.PI);
+      y -= curve * (height * 0.15);
       
       return { x, y };
     };
 
-    const drawLine = (p: number, color: string, alpha: number, offset: number) => {
+    const drawLine = (p: number, color: string, alpha: number, xOffset: number, yOffset: number) => {
       const w = canvas.width;
       const h = canvas.height;
       
       ctx.beginPath();
       ctx.strokeStyle = color;
       ctx.globalAlpha = alpha;
-      ctx.lineWidth = 2;
+      ctx.lineWidth = 1.5;
       ctx.lineCap = 'round';
       ctx.lineJoin = 'round';
 
       const segments = 100;
       let first = true;
 
-      // Only draw up to current progress p
       for (let i = 0; i <= segments * p; i++) {
         const t = i / segments;
         const { x, y } = getPoint(t, w, h);
         
         if (first) {
-          ctx.moveTo(x, y + offset);
+          ctx.moveTo(x + xOffset, y + yOffset);
           first = false;
         } else {
-          ctx.lineTo(x, y + offset);
+          ctx.lineTo(x + xOffset, y + yOffset);
         }
       }
       ctx.stroke();
@@ -77,22 +77,23 @@ export function EconomicsGraph() {
       
       const p = easeOutCubic(Math.min(progress / duration, 1));
 
-      // Draw ghost lines (staggered faded grays)
-      const ghosts = 5;
+      // Draw ghost lines (staggered shadows)
+      const ghosts = 6;
       for (let i = ghosts; i > 0; i--) {
-        const delay = i * 0.05;
+        const delay = i * 0.04;
         const ghostP = Math.max(0, p - delay);
         if (ghostP > 0) {
-          const alpha = (ghosts - i + 1) * 0.05;
-          const gray = 150 + i * 15;
-          drawLine(ghostP, `rgb(${gray}, ${gray}, ${gray})`, alpha, i * 4);
+          const alpha = (ghosts - i + 1) * 0.04;
+          const gray = 180 + i * 10;
+          // Stagger them both vertically and horizontally for a deep shadow feel
+          drawLine(ghostP, `rgb(${gray}, ${gray}, ${gray})`, alpha, i * 3, i * 3);
         }
       }
 
       // Draw main line
-      drawLine(p, '#ffffff', 0.6, 0);
+      drawLine(p, '#ffffff', 0.5, 0, 0);
 
-      if (progress < duration) {
+      if (progress < duration + 40) { // Allow ghosts to finish
         progress++;
         animationFrameId = requestAnimationFrame(draw);
       }
