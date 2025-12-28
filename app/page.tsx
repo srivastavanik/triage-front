@@ -228,9 +228,9 @@ export default function Home() {
             </motion.p>
             
             {/* Content - wider with dropshadow */}
-            <div className="relative z-10 w-full flex justify-center pb-12 px-4">
+            <div className="relative z-10 w-full flex justify-center pb-8 md:pb-12 px-2 md:px-4">
               <div className="w-full max-w-6xl">
-                <div className="mx-auto w-full transform-gpu scale-[0.95] origin-center rounded-xl" style={{ boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.05)' }}>
+                <div className="mx-auto w-full transform-gpu scale-[1] md:scale-[0.95] origin-center rounded-xl overflow-hidden md:overflow-visible" style={{ boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.05)' }}>
                   <TriageAgentWorkflow />
         </div>
               </div>
@@ -406,9 +406,9 @@ export default function Home() {
             </div>
             
             {/* Dashboard content */}
-            <div className="relative z-10 w-full flex justify-center py-12 px-4">
+            <div className="relative z-10 w-full flex justify-center py-8 md:py-12 px-2 md:px-4">
               <div className="w-full max-w-7xl">
-                <div className="mx-auto w-full transform-gpu scale-[0.98] origin-center rounded-xl" style={{ boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.05)' }}>
+                <div className="mx-auto w-full transform-gpu scale-[1] md:scale-[0.98] origin-center rounded-xl overflow-hidden" style={{ boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.05)' }}>
                   <ObservabilityDashboard />
                 </div>
               </div>

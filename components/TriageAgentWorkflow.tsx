@@ -470,7 +470,7 @@ export function TriageAgentWorkflow(): JSX.Element {
   }, [scenarioIndex]);
 
   return (
-    <div className="relative w-full h-[650px]">
+    <div className="relative w-full h-[400px] md:h-[650px]">
       {/* Main Window */}
       <div className="absolute inset-0 bg-[#121212] border border-[#1a1a1a] rounded-xl overflow-hidden flex flex-col font-sans">
         {/* Window Chrome */}
@@ -485,8 +485,8 @@ export function TriageAgentWorkflow(): JSX.Element {
         </div>
 
       <div className="flex-1 flex overflow-hidden">
-        {/* Left Panel: Task Queue */}
-        <div className="w-[240px] bg-[#121212] border-r border-[#1a1a1a] flex flex-col text-[13px]">
+        {/* Left Panel: Task Queue - Hidden on mobile */}
+        <div className="hidden md:flex w-[240px] bg-[#121212] border-r border-[#1a1a1a] flex-col text-[13px]">
           {/* In Progress */}
           <div className="p-3 border-b border-[#1a1a1a]">
             <div className="text-[11px] font-semibold text-[#dbd7caee] uppercase tracking-wide mb-3">
@@ -541,7 +541,7 @@ export function TriageAgentWorkflow(): JSX.Element {
         </div>
 
         {/* Center Panel: Agent Chat */}
-        <div className="flex-1 flex flex-col bg-[#121212] border-r border-[#1a1a1a] min-w-[360px]">
+        <div className="flex-1 flex flex-col bg-[#121212] md:border-r border-[#1a1a1a] min-w-0 md:min-w-[360px]">
           {/* Title */}
           <div className="h-12 border-b border-[#1a1a1a] flex items-center px-5">
             <span className="text-[15px] font-medium text-[#dbd7caee]">{scenario.title}</span>
@@ -684,8 +684,8 @@ export function TriageAgentWorkflow(): JSX.Element {
           </div>
         </div>
 
-        {/* Right Panel: Code Diff */}
-        <div className="flex-1 bg-[#121212] flex flex-col min-w-[400px]">
+        {/* Right Panel: Code Diff - Hidden on mobile */}
+        <div className="hidden md:flex flex-1 bg-[#121212] flex-col min-w-[400px]">
           {/* File Tabs */}
           <div className="h-10 bg-[#121212] border-b border-[#1a1a1a] flex items-center">
             {scenario.files.map((file, i) => (
@@ -749,7 +749,7 @@ export function TriageAgentWorkflow(): JSX.Element {
       </div>
       </div>
       
-      {/* Terminal Overlay - Outside main window to allow overflow */}
+      {/* Terminal Overlay - Outside main window to allow overflow - Hidden on mobile */}
       <motion.div
         initial={{ opacity: 0, y: 20, scale: 0.95 }}
         animate={{ 
@@ -758,7 +758,7 @@ export function TriageAgentWorkflow(): JSX.Element {
           scale: phase === 'coding' || phase === 'complete' ? 1 : 0.95
         }}
         transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-        className="absolute -bottom-6 -right-4 w-[440px] z-30 rounded-lg overflow-hidden border border-[#1a1a1a]"
+        className="hidden md:block absolute -bottom-6 -right-4 w-[440px] z-30 rounded-lg overflow-hidden border border-[#1a1a1a]"
         style={{ 
           boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.6)',
           pointerEvents: phase === 'coding' || phase === 'complete' ? 'auto' : 'none'

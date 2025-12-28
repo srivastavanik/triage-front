@@ -463,26 +463,26 @@ export function TraceExplorerDemo({ scenario = 0 }: TraceExplorerDemoProps): JSX
   return (
     <div className="trace-explorer rounded-xl overflow-hidden border border-[#1a1a1a] bg-[#121212] shadow-2xl">
       {/* Header */}
-      <div className="flex items-center justify-between px-5 py-4 border-b border-[#1a1a1a] bg-[#1e1e1e]">
-        <div className="flex items-center gap-4">
-          <button className="text-[13px] text-text-muted hover:text-text-secondary flex items-center gap-1">
+      <div className="flex items-center justify-between px-3 md:px-5 py-3 md:py-4 border-b border-[#1a1a1a] bg-[#1e1e1e]">
+        <div className="flex items-center gap-2 md:gap-4">
+          <button className="text-[11px] md:text-[13px] text-text-muted hover:text-text-secondary flex items-center gap-1">
             ← Observability
           </button>
-          <span className="text-[14px] font-medium text-text-primary">{config.title}</span>
+          <span className="text-[12px] md:text-[14px] font-medium text-text-primary">{config.title}</span>
         </div>
-        <div className="flex items-center gap-3">
-          <button className="px-3 py-1.5 bg-[#1a1a1a] border border-[#1a1a1a] rounded text-[12px] text-text-secondary hover:text-text-primary">
+        <div className="flex items-center gap-2 md:gap-3">
+          <button className="px-2 md:px-3 py-1 md:py-1.5 bg-[#1a1a1a] border border-[#1a1a1a] rounded text-[10px] md:text-[12px] text-text-secondary hover:text-text-primary">
             Filters
           </button>
-          <button className="px-3 py-1.5 bg-[#1a1a1a] border border-[#1a1a1a] rounded text-[12px] text-text-secondary hover:text-text-primary">
+          <button className="hidden md:block px-3 py-1.5 bg-[#1a1a1a] border border-[#1a1a1a] rounded text-[12px] text-text-secondary hover:text-text-primary">
             Refresh
           </button>
         </div>
       </div>
 
-      <div className="flex" style={{ height: '480px' }}>
+      <div className="flex flex-col md:flex-row h-[400px] md:h-[480px]">
         {/* Left - Trace List */}
-        <div className="w-[380px] border-r border-[#1a1a1a] overflow-hidden flex flex-col">
+        <div className="w-full md:w-[380px] h-[140px] md:h-full border-b md:border-b-0 md:border-r border-[#1a1a1a] overflow-hidden flex flex-col">
           <div className="overflow-y-auto flex-1">
             <table className="w-full text-[12px]">
               <thead className="sticky top-0 bg-[#121212]">

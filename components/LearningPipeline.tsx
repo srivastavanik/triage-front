@@ -155,12 +155,12 @@ export function LearningPipeline(): JSX.Element {
             </div>
 
             {/* Slack Content */}
-            <div className="p-6">
+            <div className="p-3 md:p-6">
               {/* Channel Header */}
-              <div className="flex items-center justify-between mb-6">
+              <div className="flex items-center justify-between mb-4 md:mb-6">
                 <div>
-                  <h3 className="text-[18px] font-bold text-[#dbd7caee]">#ask-triage</h3>
-                  <span className="text-[13px] text-[#f5f4f0b3]">5 members</span>
+                  <h3 className="text-[15px] md:text-[18px] font-bold text-[#dbd7caee]">#ask-triage</h3>
+                  <span className="text-[11px] md:text-[13px] text-[#f5f4f0b3]">5 members</span>
                 </div>
                 <div className="flex -space-x-2">
                   <div className="w-8 h-8 rounded-full bg-[#1e1e1e] border-2 border-[#121212] overflow-hidden">
@@ -223,7 +223,7 @@ export function LearningPipeline(): JSX.Element {
                 animate={{ opacity: 1, scale: 1, y: 0 }}
                 exit={{ opacity: 0, scale: 0.95, y: 20 }}
                 transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
-                className="absolute top-8 right-4 w-[600px] bg-[#121212] border border-[#2d2d2d] rounded-xl overflow-hidden shadow-2xl cursor-pointer"
+                className="absolute top-4 md:top-8 left-4 right-4 md:left-auto md:right-4 md:w-[600px] bg-[#121212] border border-[#2d2d2d] rounded-xl overflow-hidden shadow-2xl cursor-pointer"
                 onClick={() => setShowPR(false)}
               >
               {/* PR Header */}

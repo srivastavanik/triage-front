@@ -737,7 +737,7 @@ export function ObservabilityDashboard() {
   const totalCost = COST_BY_MODEL.reduce((sum, m) => sum + m.cost, 0);
 
   return (
-    <div className="w-full bg-[#121212] border border-[#1a1a1a] rounded-xl overflow-hidden font-sans shadow-2xl relative flex flex-col" style={{ height: '650px' }}>
+    <div className="w-full bg-[#121212] border border-[#1a1a1a] rounded-xl overflow-hidden font-sans shadow-2xl relative flex flex-col h-[500px] md:h-[650px]">
       {/* Trace Drilldown Overlay */}
       <AnimatePresence>
         {selectedTrace && (
@@ -746,13 +746,13 @@ export function ObservabilityDashboard() {
       </AnimatePresence>
 
       {/* Header */}
-      <div className="h-14 border-b border-[#1a1a1a] bg-[#121212] px-6 flex items-center justify-between shrink-0">
-        <div className="flex items-center gap-6">
-          <div className="flex items-center gap-3">
-            <h3 className="text-[14px] font-medium text-[#dbd7caee]">AI Observability</h3>
+      <div className="h-12 md:h-14 border-b border-[#1a1a1a] bg-[#121212] px-3 md:px-6 flex items-center justify-between shrink-0 overflow-x-auto">
+        <div className="flex items-center gap-3 md:gap-6">
+          <div className="flex items-center gap-3 shrink-0">
+            <h3 className="text-[12px] md:text-[14px] font-medium text-[#dbd7caee] whitespace-nowrap">AI Observability</h3>
           </div>
-          <div className="h-4 w-[1px] bg-[#1a1a1a]" />
-          <div className="flex gap-1">
+          <div className="h-4 w-[1px] bg-[#1a1a1a] shrink-0 hidden md:block" />
+          <div className="flex gap-1 shrink-0">
             {['Overview', 'Traces', 'Generations', 'Cost'].map(tab => (
               <button
                 key={tab}
@@ -787,7 +787,7 @@ export function ObservabilityDashboard() {
               className="h-full p-5 overflow-y-auto custom-scrollbar"
             >
               {/* Metric Cards */}
-              <div className="grid grid-cols-4 gap-4 mb-5">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 mb-5">
                 {[
                   { label: 'Total Requests', value: 2400000, prefix: '', suffix: '', trend: '+12%', up: true, spark: SPARKLINE_DATA.requests, color: '#f5f4f0' },
                   { label: 'Avg Latency', value: 420, prefix: '', suffix: 'ms', trend: '-8%', up: false, spark: SPARKLINE_DATA.latency, color: '#f5f4f0' },
@@ -817,9 +817,9 @@ export function ObservabilityDashboard() {
                 ))}
               </div>
 
-              <div className="grid grid-cols-3 gap-5 mb-5">
+              <div className="grid grid-cols-1 md:grid-cols-3 gap-4 md:gap-5 mb-5">
                 {/* Volume Chart */}
-                <div className="col-span-2 bg-[#181818] border border-[#1f1f1f] rounded-lg p-4 flex flex-col" style={{ height: '240px' }}>
+                <div className="col-span-1 md:col-span-2 bg-[#181818] border border-[#1f1f1f] rounded-lg p-3 md:p-4 flex flex-col h-[180px] md:h-[240px]">
                   <div className="flex items-center justify-between mb-4">
                     <div className="text-[13px] font-medium text-[#dbd7caee]">Request Volume</div>
                     <div className="flex gap-4">
@@ -910,8 +910,8 @@ export function ObservabilityDashboard() {
                 </div>
               </div>
 
-              {/* Live Activity Feed */}
-              <div className="bg-[#181818] border border-[#1f1f1f] rounded-lg p-4" style={{ height: '140px' }}>
+              {/* Live Activity Feed - Hidden on mobile */}
+              <div className="hidden md:block bg-[#181818] border border-[#1f1f1f] rounded-lg p-4" style={{ height: '140px' }}>
                 <div className="flex items-center justify-between mb-3">
                   <div className="text-[13px] font-medium text-[#dbd7caee]">Live Activity</div>
                   <div className="flex items-center gap-2">
@@ -1218,7 +1218,7 @@ export function ObservabilityDashboard() {
               className="h-full overflow-y-auto custom-scrollbar p-5"
             >
               {/* Summary Cards */}
-              <div className="grid grid-cols-4 gap-4 mb-5">
+              <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4 mb-5">
                 {[
                   { label: 'Total Spend (MTD)', value: `$${totalCost.toFixed(2)}`, sub: '+12% vs last month', subColor: 'text-[#f87171]' },
                   { label: 'Projected Monthly', value: '$1,580.00', sub: 'Based on current rate', subColor: 'text-[#f5f4f0b3]' },
