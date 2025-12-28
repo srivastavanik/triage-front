@@ -14,80 +14,88 @@ export function EconomicsGraph() {
 
     let animationFrameId: number;
     let progress = 0;
-    let phase = 0;
-
+    const duration = 180; // Total frames for the animation (~3 seconds at 60fps)
+    
     const resize = () => {
       canvas.width = canvas.offsetWidth;
       canvas.height = canvas.offsetHeight;
     };
 
+    // Cubic easing out function
+    const easeOutCubic = (t: number) => 1 - Math.pow(1 - t, 3);
+
+    const getPoint = (t: number, width: number, height: number) => {
+      const x = t * width;
+      
+      // A smooth curve that goes up, down, up, and back down
+      // Using sine waves with an envelope to make it smooth
+      const centerY = height * 0.5;
+      const amplitude = height * 0.25;
+      
+      // Main frequency components
+      const curve = Math.sin(t * Math.PI * 2.5); // 1.25 full cycles
+      
+      // Fade out at the very edges
+      const envelope = Math.sin(t * Math.PI);
+      
+      const y = centerY - (curve * amplitude * envelope);
+      
+      return { x, y };
+    };
+
+    const drawLine = (p: number, color: string, alpha: number, offset: number) => {
+      const w = canvas.width;
+      const h = canvas.height;
+      
+      ctx.beginPath();
+      ctx.strokeStyle = color;
+      ctx.globalAlpha = alpha;
+      ctx.lineWidth = 2;
+      ctx.lineCap = 'round';
+      ctx.lineJoin = 'round';
+
+      const segments = 100;
+      let first = true;
+
+      // Only draw up to current progress p
+      for (let i = 0; i <= segments * p; i++) {
+        const t = i / segments;
+        const { x, y } = getPoint(t, w, h);
+        
+        if (first) {
+          ctx.moveTo(x, y + offset);
+          first = false;
+        } else {
+          ctx.lineTo(x, y + offset);
+        }
+      }
+      ctx.stroke();
+    };
+
     const draw = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
       
-      const w = canvas.width;
-      const h = canvas.height;
-      const segments = 12;
-      const segmentWidth = w / segments;
-      const amplitude = h * 0.15;
-      const centerY = h * 0.5;
-      
-      // Calculate how many segments to draw based on progress
-      const totalLength = segments;
-      const drawLength = (progress / 100) * totalLength;
-      
-      // Draw multiple zig-zag lines with different phases
-      for (let line = 0; line < 3; line++) {
-        const lineOffset = line * 80;
-        const linePhase = phase + line * 0.5;
-        const lineAlpha = 0.15 + (line * 0.1);
-        
-        ctx.beginPath();
-        ctx.strokeStyle = `rgba(255, 255, 255, ${lineAlpha})`;
-        ctx.lineWidth = 1.5;
-        ctx.lineCap = 'round';
-        ctx.lineJoin = 'round';
-        
-        for (let i = 0; i <= Math.min(drawLength, segments); i++) {
-          const x = i * segmentWidth;
-          const direction = (i + Math.floor(linePhase)) % 2 === 0 ? 1 : -1;
-          const y = centerY + lineOffset + (direction * amplitude);
-          
-          if (i === 0) {
-            ctx.moveTo(x, y);
-          } else {
-            ctx.lineTo(x, y);
-          }
+      const p = easeOutCubic(Math.min(progress / duration, 1));
+
+      // Draw ghost lines (staggered faded grays)
+      const ghosts = 5;
+      for (let i = ghosts; i > 0; i--) {
+        const delay = i * 0.05;
+        const ghostP = Math.max(0, p - delay);
+        if (ghostP > 0) {
+          const alpha = (ghosts - i + 1) * 0.05;
+          const gray = 150 + i * 15;
+          drawLine(ghostP, `rgb(${gray}, ${gray}, ${gray})`, alpha, i * 4);
         }
-        
-        // Partial segment
-        if (drawLength > Math.floor(drawLength) && Math.floor(drawLength) < segments) {
-          const partialProgress = drawLength - Math.floor(drawLength);
-          const prevI = Math.floor(drawLength);
-          const nextI = prevI + 1;
-          
-          const prevX = prevI * segmentWidth;
-          const nextX = nextI * segmentWidth;
-          const prevDirection = (prevI + Math.floor(linePhase)) % 2 === 0 ? 1 : -1;
-          const nextDirection = (nextI + Math.floor(linePhase)) % 2 === 0 ? 1 : -1;
-          const prevY = centerY + lineOffset + (prevDirection * amplitude);
-          const nextY = centerY + lineOffset + (nextDirection * amplitude);
-          
-          const x = prevX + (nextX - prevX) * partialProgress;
-          const y = prevY + (nextY - prevY) * partialProgress;
-          ctx.lineTo(x, y);
-        }
-        
-        ctx.stroke();
       }
 
-      // Animate
-      if (progress < 100) {
-        progress += 0.8;
-      } else {
-        phase += 0.02;
-      }
+      // Draw main line
+      drawLine(p, '#ffffff', 0.6, 0);
 
-      animationFrameId = requestAnimationFrame(draw);
+      if (progress < duration) {
+        progress++;
+        animationFrameId = requestAnimationFrame(draw);
+      }
     };
 
     window.addEventListener('resize', resize);
