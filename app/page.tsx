@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState, useRef, useCallback } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
 import { motion, useScroll, useSpring } from 'framer-motion';
@@ -23,49 +23,91 @@ export default function Home() {
   const [testProgress, setTestProgress] = useState(0);
   const { scrollYProgress } = useScroll();
   
-  // Video ping-pong loop
+  // Video ping-pong loop (forward -> reverse -> forward ...). We avoid React state
+  // here to prevent a visible pause/re-render at the end frame.
   const videoRef = useRef<HTMLVideoElement>(null);
-  const [videoDirection, setVideoDirection] = useState<'forward' | 'backward'>('forward');
-  
-  // Handle video ping-pong playback
+  const videoDirRef = useRef<1 | -1>(1); // 1 forward, -1 backward
+  const rafRef = useRef<number | null>(null);
+
   useEffect(() => {
     const video = videoRef.current;
     if (!video) return;
-    
-    let animationId: number;
-    const step = 1 / 30; // ~30fps for smooth reverse
-    
-    const animateBackward = () => {
-      if (!video || videoDirection !== 'backward') return;
-      
-      if (video.currentTime <= 0.1) {
-        // Reached start, switch to forward
-        setVideoDirection('forward');
-        video.play();
+
+    // Hard-disable native looping so we fully control the direction.
+    video.loop = false;
+
+    const cancelRaf = (): void => {
+      if (rafRef.current !== null) {
+        cancelAnimationFrame(rafRef.current);
+        rafRef.current = null;
+      }
+    };
+
+    const startForward = (): void => {
+      cancelRaf();
+      videoDirRef.current = 1;
+      // If we were at (or extremely near) the end, rewind a hair so play() advances.
+      if (Number.isFinite(video.duration) && video.duration > 0) {
+        video.currentTime = Math.min(video.duration - 0.001, Math.max(0, video.currentTime));
+      }
+      void video.play().catch(() => {
+        // Autoplay might be blocked in some environments; muted+inline usually passes.
+      });
+    };
+
+    const reverseTick = (): void => {
+      if (videoDirRef.current !== -1) return;
+
+      // Step back at ~60fps for a smooth reverse. Seeking repaints the frame.
+      const step = 1 / 60;
+      const next = Math.max(0, video.currentTime - step);
+      video.currentTime = next;
+
+      if (next <= 0.02) {
+        // Reached start — resume forward immediately.
+        startForward();
         return;
       }
-      
-      video.currentTime = Math.max(0, video.currentTime - step);
-      animationId = requestAnimationFrame(animateBackward);
+
+      rafRef.current = requestAnimationFrame(reverseTick);
     };
-    
-    const handleEnded = () => {
+
+    const startReverse = (): void => {
+      cancelRaf();
+      videoDirRef.current = -1;
+      // Make sure we are not exactly on the ended state (some browsers snap to 0 after).
+      if (Number.isFinite(video.duration) && video.duration > 0) {
+        video.currentTime = Math.min(video.duration - 0.001, video.currentTime);
+      }
       video.pause();
-      setVideoDirection('backward');
+      rafRef.current = requestAnimationFrame(reverseTick);
     };
-    
-    if (videoDirection === 'backward') {
-      video.pause();
-      animationId = requestAnimationFrame(animateBackward);
-    }
-    
-    video.addEventListener('ended', handleEnded);
-    
+
+    const onTimeUpdate = (): void => {
+      if (videoDirRef.current !== 1) return;
+      if (!Number.isFinite(video.duration) || video.duration <= 0) return;
+      if (video.currentTime >= video.duration - 0.05) {
+        startReverse();
+      }
+    };
+
+    const onEnded = (): void => {
+      // Fallback for browsers that still fire ended before our timeupdate threshold.
+      if (videoDirRef.current === 1) startReverse();
+    };
+
+    video.addEventListener('timeupdate', onTimeUpdate);
+    video.addEventListener('ended', onEnded);
+
+    // Kick off initial forward play (if autoplay is delayed, it’ll start once allowed).
+    startForward();
+
     return () => {
-      video.removeEventListener('ended', handleEnded);
-      if (animationId) cancelAnimationFrame(animationId);
+      cancelRaf();
+      video.removeEventListener('timeupdate', onTimeUpdate);
+      video.removeEventListener('ended', onEnded);
     };
-  }, [videoDirection]);
+  }, []);
 
   // Auto-cycle detect steps with progress
   useEffect(() => {
