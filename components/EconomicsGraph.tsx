@@ -24,22 +24,21 @@ export function EconomicsGraph() {
     const easeOutCubic = (t: number) => 1 - Math.pow(1 - t, 3);
 
     const getPoint = (t: number, width: number, height: number) => {
-      // Start from roughly 15% of the container width (to avoid text)
-      // and 70% of the height.
-      // Move towards 100% width and 10% height.
-      const startX = width * 0.15;
-      const endX = width * 1.1; // Go slightly off screen
-      const startY = height * 0.75;
-      const endY = height * 0.05;
+      // Start from roughly 45% of the container width (safely right of all text)
+      // and exactly the bottom border.
+      const startX = width * 0.45;
+      const endX = width * 1.1; 
+      const startY = height;
+      const endY = height * 0.1;
       
       const x = startX + t * (endX - startX);
       
       // Base linear path
       let y = startY + t * (endY - startY);
       
-      // Add a smooth "S" bend
+      // Add a smooth curve that arcs upwards
       const curve = Math.sin(t * Math.PI);
-      y -= curve * (height * 0.15);
+      y -= curve * (height * 0.2);
       
       return { x, y };
     };
