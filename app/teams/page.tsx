@@ -128,8 +128,8 @@ export default function TeamsPage() {
     <main className="min-h-screen bg-[#000000] text-[#f5f4f0] font-sans selection:bg-[#C9A37E] selection:text-[#000000]">
       <SiteNav />
 
-      {/* Hero Section with Tan Background */}
-      <section className="pt-40 pb-24 relative bg-[#C9A37E]">
+      {/* Hero Section */}
+      <section className="pt-40 pb-24 relative bg-[#0a0a0a]">
         <div className="container-max relative z-10">
           <motion.div
             initial={{ opacity: 0, y: 20 }}
@@ -137,15 +137,15 @@ export default function TeamsPage() {
             transition={{ duration: 0.6 }}
             className="max-w-4xl"
           >
-            <h1 className="text-[48px] lg:text-[72px] font-normal leading-[1.05] tracking-[-0.03em] mb-8 text-[#1a1a1a]">
+            <h1 className="text-[48px] lg:text-[72px] font-normal leading-[1.05] tracking-[-0.03em] mb-8 text-[#C9A37E]">
               Security and economics for AI systems
             </h1>
-            <p className="text-[20px] lg:text-[24px] leading-relaxed max-w-2xl mb-8 text-[#2d2d2d]">
+            <p className="text-[20px] lg:text-[24px] leading-relaxed max-w-2xl mb-8 text-[#d8b78f]">
               Built for CISOs. Adopted by builders. <br />
-              <span className="text-[#0a0a0a] font-medium">One platform for AI security outcomes.</span>
+              <span className="text-[#C9A37E] font-medium">One platform for AI security outcomes.</span>
             </p>
             
-            <p className="text-[16px] leading-relaxed max-w-2xl text-[#3d3d3d]">
+            <p className="text-[16px] leading-relaxed max-w-2xl text-[#b89b70]">
               Triage secures LLM-powered products across inference, retrieval, and training workflows. It works as a security control for traditional environments or as a daily engineering tool for teams shipping AI features. Same data, same controls, different ownership models.
             </p>
           </motion.div>
