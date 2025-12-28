@@ -311,6 +311,27 @@ export function TriageAgentWorkflow(): JSX.Element {
   const [agentCount, setAgentCount] = useState(1);
   const [selectedModels, setSelectedModels] = useState<string[]>(['Opus 4.5']);
   const [showAgentSelector, setShowAgentSelector] = useState(false);
+  const agentSelectorRef = useRef<HTMLDivElement>(null);
+  const agentButtonRef = useRef<HTMLButtonElement>(null);
+  
+  // Close dropdown when clicking outside
+  useEffect(() => {
+    if (!showAgentSelector) return;
+    
+    const handleClickOutside = (e: MouseEvent) => {
+      if (
+        agentSelectorRef.current && 
+        !agentSelectorRef.current.contains(e.target as Node) &&
+        agentButtonRef.current &&
+        !agentButtonRef.current.contains(e.target as Node)
+      ) {
+        setShowAgentSelector(false);
+      }
+    };
+    
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, [showAgentSelector]);
   
   // Update selected models when agent count changes
   const handleAgentCountChange = (count: number) => {
@@ -698,6 +719,7 @@ export function TriageAgentWorkflow(): JSX.Element {
                 {/* Agent count + Model selector */}
                 <div className="flex items-center gap-2">
                   <button
+                    ref={agentButtonRef}
                     onClick={() => setShowAgentSelector(!showAgentSelector)}
                     className="px-2 py-1 bg-[#1a1a1a] hover:bg-[#252525] rounded text-[12px] text-[#dbd7caee] flex items-center gap-1.5 transition-colors"
                   >
@@ -789,6 +811,7 @@ export function TriageAgentWorkflow(): JSX.Element {
       {/* Agent Selector Dropdown - Outside main window to avoid overflow clipping */}
       {showAgentSelector && (
         <div 
+          ref={agentSelectorRef}
           className="absolute z-50 w-64 bg-[#1e1e1e] border border-[#2d2d2d] rounded-lg shadow-xl"
           style={{ 
             bottom: '52px',
