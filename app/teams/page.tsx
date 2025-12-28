@@ -26,7 +26,7 @@ function ROIFormula() {
   
   useEffect(() => {
     if (isInView) {
-      const timer = setTimeout(() => setPhase(1), 5500);
+      const timer = setTimeout(() => setPhase(1), 5800);
       return () => clearTimeout(timer);
     }
   }, [isInView]);
@@ -34,22 +34,6 @@ function ROIFormula() {
   return (
     <div ref={ref} className="py-8">
       <div className="text-[14px] md:text-[16px] leading-relaxed font-light">
-        <motion.span
-          initial={{ opacity: 0 }}
-          animate={isInView ? { opacity: 1 } : {}}
-          transition={{ duration: 0.3, delay: 5.2 }}
-          className={`inline-block mr-1 font-medium ${phase === 1 ? 'bg-[#4d9375] text-[#000000] px-1.5 py-0.5' : 'text-text-primary'}`}
-        >
-          ROI
-        </motion.span>
-        <motion.span
-          initial={{ opacity: 0 }}
-          animate={isInView ? { opacity: 1 } : {}}
-          transition={{ duration: 0.2, delay: 5.3 }}
-          className="text-text-muted"
-        >
-          {' '}={' '}
-        </motion.span>
         <span className="text-text-muted">(</span>
         {terms.map((term, i) => (
           <motion.span
@@ -69,6 +53,22 @@ function ROIFormula() {
           className="text-text-muted"
         >
           )
+        </motion.span>
+        <motion.span
+          initial={{ opacity: 0 }}
+          animate={isInView ? { opacity: 1 } : {}}
+          transition={{ duration: 0.2, delay: 5.2 }}
+          className="text-text-muted"
+        >
+          {' '}={' '}
+        </motion.span>
+        <motion.span
+          initial={{ opacity: 0 }}
+          animate={isInView ? { opacity: 1 } : {}}
+          transition={{ duration: 0.3, delay: 5.4 }}
+          className={`inline-block font-medium ${phase === 1 ? 'bg-[#22c55e] text-[#000000] px-1.5 py-0.5' : 'text-text-primary'}`}
+        >
+          ROI
         </motion.span>
       </div>
     </div>
