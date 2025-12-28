@@ -153,7 +153,7 @@ export default function TeamsPage() {
               <span className="text-white font-medium drop-shadow-[0_0_15px_rgba(255,255,255,0.3)]">One platform for AI security outcomes.</span>
             </p>
             
-            <p className="text-[16px] leading-relaxed max-w-2xl text-[#b89b70]">
+            <p className="text-[16px] leading-relaxed max-w-2xl text-white/80">
               Triage secures LLM-powered products across inference, retrieval, and training workflows. It works as a security control for traditional environments or as a daily engineering tool for teams shipping AI features. Same data, same controls, different ownership models.
             </p>
           </motion.div>
