@@ -104,13 +104,11 @@ export default function Careers(): JSX.Element {
       >
         <div className="max-w-3xl mb-8">
           <p className="text-[14px] uppercase tracking-[0.25em] text-[#f5f4f099] mb-6">Careers</p>
-          <h1 className="text-[48px] lg:text-[64px] font-normal leading-[1.05] tracking-[-0.02em] mb-6">
-            Triage is an applied team focused on <span className="text-[#C9A37E]">securing the future of AI software.</span>
+          <h1 className="text-[48px] lg:text-[64px] font-normal leading-[1.05] tracking-[-0.03em]">
+            Triage is an applied team focused on <br />
+            <span className="text-[#C9A37E]">securing the future of AI software.</span>
             </h1>
-          <p className="text-[18px] leading-[1.7] text-[#dbd7caee] max-w-2xl">
-            We harden inference, retrieval, and training pathways so AI systems behave safely under pressure. If you want to work on the infrastructure, reasoning engines, and guardrails that keep modern AI trustworthy, this is it.
-              </p>
-            </div>
+        </div>
         
         <div className="relative h-[480px] w-full border border-[#1a1a1a]">
           <Image
@@ -121,7 +119,7 @@ export default function Careers(): JSX.Element {
             className="object-cover"
             priority
           />
-        </div>
+            </div>
           </motion.div>
 
       {/* Roles */}

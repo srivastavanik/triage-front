@@ -292,7 +292,7 @@ export default function Home() {
           <div className="relative rounded-lg flex flex-col items-center">
             {/* Background image - cropped top tighter, tight horizontal */}
             <div className="absolute -bottom-4 -top-2 -inset-x-2 md:-bottom-8 md:-top-4 md:-inset-x-4 lg:-bottom-10 lg:-top-6 lg:-inset-x-6 rounded-lg overflow-hidden">
-              <Image
+          <Image
                 src="/wider.png"
                 alt=""
                 fill
@@ -319,11 +319,11 @@ export default function Home() {
               <div className="w-full max-w-6xl">
                 <div className="mx-auto w-full transform-gpu scale-[1] md:scale-[0.95] origin-center rounded-xl overflow-hidden md:overflow-visible" style={{ boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.05)' }}>
                   <TriageAgentWorkflow />
-        </div>
-              </div>
-            </div>
-          </div>
-        </div>
+                          </div>
+                          </div>
+                          </div>
+                          </div>
+                      </div>
       </section>
 
       {/* Logo Carousel */}
@@ -362,10 +362,10 @@ export default function Home() {
                     className="h-[34px] w-auto max-h-full max-w-[150px] object-contain transition-all duration-300"
                     style={{ filter: 'brightness(0) invert(1)' }}
                   />
-              </div>
+                          </div>
             ))}
-          </div>
-          </div>
+                          </div>
+                          </div>
         </div>
       </section>
 
@@ -374,14 +374,14 @@ export default function Home() {
         <div className="container-max">
           <div className="grid grid-cols-1 md:grid-cols-2 gap-16 items-center min-h-[500px]">
             {/* Left side - Heading */}
-            <div>
+                          <div>
               <h2 className="text-[32px] lg:text-[44px] font-normal leading-[1.1] tracking-[-0.02em] mb-6">
                 AI-native attack surfaces require AI-native security
               </h2>
               <p className="text-text-secondary text-[17px] max-w-md leading-relaxed">
                 Foundation models with tools and retrieval introduce failure modes that traditional security tools cannot see
               </p>
-            </div>
+                          </div>
 
             {/* Right side - Roulette scrolling animation */}
             <div className="relative h-[400px] overflow-hidden">
@@ -417,7 +417,7 @@ export default function Home() {
                     <span className="text-[28px] lg:text-[36px] font-normal leading-[1.2] tracking-[-0.02em] text-[#666] hover:text-[#f5f4f0] transition-colors duration-300 cursor-default">
                       {item}
               </span>
-                  </div>
+                      </div>
                 ))}
                 {/* Duplicate for seamless loop */}
                 {[
@@ -445,12 +445,12 @@ export default function Home() {
                     <span className="text-[28px] lg:text-[36px] font-normal leading-[1.2] tracking-[-0.02em] text-[#666] hover:text-[#f5f4f0] transition-colors duration-300 cursor-default">
                       {item}
               </span>
-                  </div>
+                          </div>
                 ))}
-              </div>
-            </div>
-          </div>
-        </div>
+                          </div>
+                          </div>
+                          </div>
+                      </div>
       </section>
 
       {/* OBSERVE Section - AI Observability Dashboard */}
@@ -459,7 +459,7 @@ export default function Home() {
           {/* Section Header */}
           <div className="mb-4">
             <span className="text-[11px] font-bold uppercase tracking-widest text-text-muted">Observe</span>
-          </div>
+                    </div>
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-16 mb-16">
             <h2 className="text-[36px] lg:text-[48px] font-normal leading-[1.1] tracking-[-0.02em] max-w-xl">
               Ground truth for what your AI systems actually do
@@ -469,8 +469,8 @@ export default function Home() {
                 Structured telemetry across model calls, tool executions, and retrieval events. 
                 Know exactly what happened when something goes wrong.
               </p>
-            </div>
-          </div>
+                      </div>
+                      </div>
 
           {/* Full Width Dashboard with Background */}
           <div className="relative rounded-lg flex flex-col items-center">
@@ -486,18 +486,18 @@ export default function Home() {
               />
               {/* Top blur gradient */}
               <div className="absolute top-0 left-0 right-0 h-32 z-10 backdrop-blur-md [mask-image:linear-gradient(to_bottom,black,transparent)] pointer-events-none" />
-            </div>
+                    </div>
             
             {/* Dashboard content */}
             <div className="relative z-10 w-full flex justify-center py-8 md:py-12 px-2 md:px-4">
               <div className="w-full max-w-7xl">
                 <div className="mx-auto w-full transform-gpu scale-[1] md:scale-[0.98] origin-center rounded-xl overflow-hidden" style={{ boxShadow: '0 25px 50px -12px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(255, 255, 255, 0.05)' }}>
                   <ObservabilityDashboard />
+                  </div>
                 </div>
               </div>
             </div>
           </div>
-        </div>
       </section>
 
       {/* CAPTURE Section - Trace Explorer */}
@@ -506,7 +506,7 @@ export default function Home() {
           {/* Section Header */}
           <div className="mb-4">
             <span className="text-[11px] font-bold uppercase tracking-widest text-text-muted">Capture</span>
-          </div>
+                </div>
           <h2 className="text-[36px] lg:text-[48px] font-normal leading-[1.1] tracking-[-0.02em] mb-16 max-w-2xl">
             Reconstruct any interaction end-to-end
           </h2>
@@ -529,7 +529,7 @@ export default function Home() {
                   
                   <motion.div
                     initial={false}
-                    animate={{ 
+                    animate={{
                       height: captureStep === index ? 'auto' : 0,
                       opacity: captureStep === index ? 1 : 0
                     }}
@@ -540,10 +540,10 @@ export default function Home() {
                       {step.description}
                     </p>
                   </motion.div>
-                </div>
-              ))}
+              </div>
+            ))}
               <div className="border-t border-[#1a1a1a]" />
-            </div>
+          </div>
 
             {/* Right: Visual with Background */}
             <div className="sticky top-24 relative">
@@ -559,20 +559,20 @@ export default function Home() {
                 />
                 {/* Top blur gradient */}
                 <div className="absolute top-0 left-0 right-0 h-16 z-10 backdrop-blur-md [mask-image:linear-gradient(to_bottom,black,transparent)] pointer-events-none" />
-              </div>
-              
-              <motion.div
+          </div>
+
+          <motion.div
                 key={captureStep}
-                initial={{ opacity: 0, y: 20 }}
+            initial={{ opacity: 0, y: 20 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4, ease: [0.16, 1, 0.3, 1] }}
                 className="relative z-10 py-8"
               >
                 <TraceExplorerDemo scenario={captureStep} />
-              </motion.div>
-            </div>
-          </div>
-        </div>
+          </motion.div>
+                </div>
+                </div>
+                </div>
       </section>
 
       {/* ENFORCE Section - Two accordions side by side */}
@@ -583,7 +583,7 @@ export default function Home() {
             <div>
               <div className="mb-4">
                 <span className="text-[11px] font-bold uppercase tracking-widest text-text-muted">Enforce</span>
-              </div>
+                </div>
               <h2 className="text-[32px] lg:text-[40px] font-normal leading-[1.1] tracking-[-0.02em] mb-6 max-w-md">
                 Runtime controls at the boundaries that matter
               </h2>
@@ -603,16 +603,16 @@ export default function Home() {
                     {/* Progress bar */}
                     {detectStep === index && (
                       <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-[#1a1a1a]">
-                        <motion.div 
+          <motion.div
                           className="h-full bg-[#C9A37E]"
                           initial={{ width: 0 }}
                           animate={{ width: `${detectProgress}%` }}
                           transition={{ duration: 0.1, ease: "linear" }}
-                        />
-                      </div>
+          />
+        </div>
                     )}
                     
-                    <motion.div
+              <motion.div
                       initial={false}
                       animate={{ 
                         height: detectStep === index ? 'auto' : 0,
@@ -624,15 +624,15 @@ export default function Home() {
                       <p className="text-text-secondary text-[14px] leading-relaxed pb-5 max-w-md">
                         {step.description}
                       </p>
-                    </motion.div>
+              </motion.div>
                   </div>
                 ))}
                 <div className="border-t border-[#1a1a1a]" />
-              </div>
             </div>
+          </div>
 
             {/* Right: Test & Prevent */}
-            <div>
+              <div>
               <div className="mb-4">
                 <span className="text-[11px] font-bold uppercase tracking-widest text-text-muted">Test & Prevent</span>
               </div>
@@ -655,16 +655,16 @@ export default function Home() {
                     {/* Progress bar */}
                     {testStep === index && (
                       <div className="absolute bottom-0 left-0 right-0 h-[2px] bg-[#1a1a1a]">
-                        <motion.div 
+          <motion.div
                           className="h-full bg-[#C9A37E]"
                           initial={{ width: 0 }}
                           animate={{ width: `${testProgress}%` }}
                           transition={{ duration: 0.1, ease: "linear" }}
-                        />
-                      </div>
+          />
+        </div>
                     )}
                     
-                    <motion.div
+                  <motion.div
                       initial={false}
                       animate={{ 
                         height: testStep === index ? 'auto' : 0,
@@ -676,14 +676,14 @@ export default function Home() {
                       <p className="text-text-secondary text-[14px] leading-relaxed pb-5 max-w-md">
                         {step.description}
                       </p>
-                    </motion.div>
-                  </div>
-                ))}
+                  </motion.div>
+                </div>
+              ))}
                 <div className="border-t border-[#1a1a1a]" />
-              </div>
             </div>
-          </div>
-        </div>
+                  </div>
+                </div>
+              </div>
       </section>
 
       {/* Learning Pipeline Section */}
@@ -750,7 +750,7 @@ export default function Home() {
                 <div>
                   <h3 className="text-[16px] font-medium text-text-primary mb-2">{feature.title}</h3>
                   <p className="text-[13px] text-text-secondary leading-relaxed max-w-[90%]">{feature.description}</p>
-                </div>
+                    </div>
               </motion.div>
             ))}
           </div>
@@ -765,7 +765,7 @@ export default function Home() {
       {/* CTA Section */}
       <section className="py-32 bg-[#0a0a0a]">
         <div className="container-max">
-          <motion.div
+        <motion.div
             initial={{ opacity: 0, y: 20 }}
           whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
