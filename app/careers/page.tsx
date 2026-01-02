@@ -102,10 +102,10 @@ export default function Careers(): JSX.Element {
             animate={{ opacity: 1, y: 0 }}
         className="mb-12"
       >
-        <div className="max-w-3xl mb-8">
+        <div className="mb-8">
           <p className="text-[14px] uppercase tracking-[0.25em] text-[#f5f4f099] mb-6">Careers</p>
           <h1 className="text-[48px] lg:text-[64px] font-normal leading-[1.05] tracking-[-0.03em]">
-            Triage is an applied team focused on <br />
+            Triage is an applied team <span className="inline md:whitespace-nowrap">focused on</span> <br />
             <span className="text-[#C9A37E]">securing the future of AI software.</span>
             </h1>
         </div>
