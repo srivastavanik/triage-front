@@ -96,54 +96,37 @@ export default function Careers(): JSX.Element {
             Back to Home
           </Link>
 
-      {/* Hero */}
-      <motion.div
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        className="mb-20"
-      >
-        <div className="grid gap-12 lg:grid-cols-[1.2fr,0.8fr] items-center">
-          <div>
-            <p className="text-[14px] uppercase tracking-[0.25em] text-[#f5f4f099] mb-6">Careers</p>
-            <h1 className="text-[48px] lg:text-[64px] font-normal leading-[1.05] tracking-[-0.02em] mb-6">
-              Triage is an applied team focused on <span className="text-[#C9A37E]">securing the future of AI software.</span>
+          {/* Hero */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="mb-16"
+          >
+        <div className="max-w-2xl mb-12">
+          <p className="text-[14px] uppercase tracking-[0.25em] text-[#f5f4f099] mb-6">Careers</p>
+          <h1 className="text-[48px] lg:text-[72px] font-normal leading-[1.05] tracking-[-0.03em] text-[#f5f4f0]">
+            Triage is an applied team focused on <span className="text-[#C9A37E]">securing the future of AI software.</span>
             </h1>
-            <p className="text-[18px] leading-[1.7] text-[#dbd7caee] max-w-3xl">
-              We harden inference, retrieval, and training pathways so AI systems behave safely under pressure. If you want to work on the infrastructure, reasoning engines, and guardrails that keep modern AI trustworthy, this is it.
-            </p>
-          </div>
-          <div className="relative h-[560px] w-full">
-            <Image
-              src="/careers-hero.jpg"
-              alt="Triage team working session"
-              fill
-              sizes="100vw"
-              className="object-cover"
-              priority
-            />
-          </div>
         </div>
-      </motion.div>
-
-      {/* Greater description */}
-      <section id="overview" className="mb-24 border border-[#2d2d2d] bg-[#0d0d0d] p-10 space-y-6 text-[18px] leading-[1.8] text-[#f5f4f0]">
-        <p>AI products are being shipped faster than their security and reliability foundations can keep up. Triage exists to close that gap by making inference, retrieval, and training pathways fully visible, and by turning what we observe into concrete fixes teams can ship.</p>
-        <p>We’re building for people who take ownership without being managed, who like hard problems with real consequences, and who want their work to measurably raise the safety floor of the systems others depend on. The bar is high because the stakes are.</p>
-        <p>If you want to help define how modern AI systems are made trustworthy, reach out.</p>
-        <a
-          href="mailto:srivastavan@berkeley.edu"
-          className="inline-flex items-center gap-2 px-8 py-3 border border-[#f5f4f0] text-[#f5f4f0] text-[15px] tracking-tight hover:bg-[#f5f4f0] hover:text-[#0a0a0a] transition-colors"
-        >
-          Email srivastavan@berkeley.edu
-        </a>
-      </section>
+        
+        <div className="relative h-[500px] w-full border border-[#1a1a1a]">
+          <Image
+            src="/careers-hero.jpg"
+            alt="Triage team working session"
+            fill
+            sizes="100vw"
+            className="object-cover"
+            priority
+          />
+            </div>
+          </motion.div>
 
       {/* Roles */}
       <section className="mb-24">
         <div className="flex items-center gap-4 mb-6">
           <h2 className="text-[13px] font-medium uppercase tracking-[0.4em] text-[#f5f4f0b3]">Roles we’re hiring</h2>
           <div className="px-3 py-1 text-[12px] border border-[#f5f4f0b3]">{roles.length} roles</div>
-        </div>
+            </div>
         <div className="space-y-4">
           {roles.map((role, index) => {
             const isOpen = openRole === index;
@@ -166,7 +149,7 @@ export default function Careers(): JSX.Element {
                     strokeWidth="2"
                   >
                     <path d="M6 9l6 6 6-6" />
-                  </svg>
+                    </svg>
                 </button>
                 {isOpen && (
                   <div className="border-t border-[#2d2d2d] p-6 space-y-8">
@@ -188,7 +171,7 @@ export default function Careers(): JSX.Element {
                             <li key={item}>{item}</li>
                           ))}
                         </ul>
-                      </div>
+                        </div>
                       <div>
                         <h4 className="text-[12px] uppercase tracking-[0.35em] text-[#f5f4f0b3] mb-2">Qualifications</h4>
                         <ul className="list-disc pl-5 space-y-1 text-[#f5f4f0] marker:text-[#f5f4f0]">
@@ -196,8 +179,8 @@ export default function Careers(): JSX.Element {
                             <li key={item}>{item}</li>
                           ))}
                         </ul>
-                      </div>
-                    </div>
+                          </div>
+                        </div>
                     <div className="grid gap-6 md:grid-cols-2">
                       <div>
                         <h4 className="text-[12px] uppercase tracking-[0.35em] text-[#f5f4f0b3] mb-2">Nice to have</h4>
@@ -215,16 +198,16 @@ export default function Careers(): JSX.Element {
                           href={`mailto:srivastavan@berkeley.edu?subject=${encodeURIComponent(role.title + ' - Triage')}`}
                           className="inline-flex items-center gap-2 px-6 py-2 border border-[#f5f4f0] text-[#f5f4f0] text-[13px] tracking-tight hover:bg-[#f5f4f0] hover:text-[#0a0a0a] transition-colors mt-4"
                         >
-                          Apply for {role.title}
+                          Email srivastavan@berkeley.edu
                         </a>
                       </div>
                     </div>
                   </div>
-                )}
+                  )}
               </div>
             );
           })}
-        </div>
+          </div>
       </section>
         </div>
       </div>
